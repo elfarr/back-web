@@ -93,8 +93,8 @@ $stmt->execute($placeholders);
   //  }
   // $stmt = $db->prepare("INSERT INTO language (pascal,c,c_plus_plus,js,php,python,java,haskel,clojure,prolog,scala)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
   // $stmt -> execute(array('Pascal'=>$Pascal, 'C'=>$C, 'C_plus_plus'=>$C_plus_plus, 'JavaScript'=>$JavaScript, 'PHP'=>$PHP, 'Python'=>$Python,'Java'=>$Java, 'Haskel'=>$Haskel, 'Clojure'=>$Clojure, 'Prolog'=>$Prolog, 'Scala'=>$Scala));
-  $stmt = $db->prepare("INSERT INTO application_language (id_lang, id_app)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
-  $stmt -> execute(array('Pascal'=>$Pascal, 'C'=>$C, 'C_plus_plus'=>$C_plus_plus, 'JavaScript'=>$JavaScript, 'PHP'=>$PHP, 'Python'=>$Python,'Java'=>$Java, 'Haskel'=>$Haskel, 'Clojure'=>$Clojure, 'Prolog'=>$Prolog, 'Scala'=>$Scala));
+  // $stmt = $db->prepare("INSERT INTO application_language (id_lang, id_app)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
+  // $stmt -> execute(array('Pascal'=>$Pascal, 'C'=>$C, 'C_plus_plus'=>$C_plus_plus, 'JavaScript'=>$JavaScript, 'PHP'=>$PHP, 'Python'=>$Python,'Java'=>$Java, 'Haskel'=>$Haskel, 'Clojure'=>$Clojure, 'Prolog'=>$Prolog, 'Scala'=>$Scala));
   print ('Спасибо, результаты сохранены.<br/>');
 }
 catch(PDOException $e){
