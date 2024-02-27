@@ -19,6 +19,17 @@ $email = $_POST['email'];
 $date = $_POST['date'];
 $gen = $_POST['gen'];
 $bio = $_POST['bio'];
+$Pascal=in_array('Pascal',$_POST['languages']) ? '1' : '0';
+$C=in_array('C',$_POST['languages']) ? '1' : '0';
+$C_plus_plus=in_array('C_plus_plus',$_POST['languages']) ? '1' : '0';
+$JavaScript=in_array('JavaScript',$_POST['languages']) ? '1' : '0';
+$PHP=in_array('PHP',$_POST['languages']) ? '1' : '0';
+$Python=in_array('Python',$_POST['languages']) ? '1' : '0';
+$Java=in_array('Java',$_POST['languages']) ? '1' : '0';
+$Haskel=in_array('Haskel',$_POST['languages']) ? '1' : '0';
+$Clojure=in_array('Clojure',$_POST['languages']) ? '1' : '0';
+$Prolog=in_array('Prolog',$_POST['languages']) ? '1' : '0';
+$Scala=in_array('Scala',$_POST['languages']) ? '1' : '0';
 // Проверяем ошибки.
 $errors = FALSE;
 if (empty($_POST['fio'])) {
