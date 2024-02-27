@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   exit();
 }
 // Иначе, если запрос был методом POST, т.е. нужно проверить данные и сохранить их в XML-файл.
-$name = $_POST['fio'];
+$fio = $_POST['fio'];
 $tel = $_POST['tel'];
 $email = $_POST['email'];
 $date = $_POST['date'];
