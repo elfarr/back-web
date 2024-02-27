@@ -75,8 +75,25 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 try {
   $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)"."VALUES (:fio,:tel,:email,:date,:gen,:bio)");
   $stmt -> execute(array('fio'=>$fio,'tel'=>$tel,'email'=>$email,'date'=>$date,'gen'=>$gen,'bio'=>$bio));
-  
-  $stmt = $db->prepare("INSERT INTO language (pascal,c,c_plus_plus,js,php,python,java,haskel,clojure,prolog,scala)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
+  $data = $_POST['languages'];
+  $placeholders = array();
+foreach ($data as $key => $value) {
+    $placeholders[":" . $key] = $value;
+}
+
+$keys = implode(", ", array_keys($placeholders));
+$values = implode(", ", array_keys($data));
+
+$stmt = $db->prepare("INSERT INTO language ($keys) VALUES ($values)");
+$stmt->execute($placeholders);
+  // foreach ($_POST['languages'] as $lang) {
+  //   $stmt = $db->prepare("INSERT INTO language (pascal,c,c_plus_plus,js,php,python,java,haskel,clojure,prolog,scala)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
+  //   $stmt -> execute(array('Pascal'=>$Pascal, 'C'=>$C, 'C_plus_plus'=>$C_plus_plus, 'JavaScript'=>$JavaScript, 'PHP'=>$PHP, 'Python'=>$Python,'Java'=>$Java, 'Haskel'=>$Haskel, 'Clojure'=>$Clojure, 'Prolog'=>$Prolog, 'Scala'=>$Scala));
+  //   // Вставляем $ability в БД
+  //  }
+  // $stmt = $db->prepare("INSERT INTO language (pascal,c,c_plus_plus,js,php,python,java,haskel,clojure,prolog,scala)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
+  // $stmt -> execute(array('Pascal'=>$Pascal, 'C'=>$C, 'C_plus_plus'=>$C_plus_plus, 'JavaScript'=>$JavaScript, 'PHP'=>$PHP, 'Python'=>$Python,'Java'=>$Java, 'Haskel'=>$Haskel, 'Clojure'=>$Clojure, 'Prolog'=>$Prolog, 'Scala'=>$Scala));
+  $stmt = $db->prepare("INSERT INTO application_language (id_lang, id_app)"." VALUES (:Pascal,:C,:C_plus_plus,:JavaScript,:PHP,:Python,:Java,:Haskel,:Clojure,:Prolog,:Scala)");
   $stmt -> execute(array('Pascal'=>$Pascal, 'C'=>$C, 'C_plus_plus'=>$C_plus_plus, 'JavaScript'=>$JavaScript, 'PHP'=>$PHP, 'Python'=>$Python,'Java'=>$Java, 'Haskel'=>$Haskel, 'Clojure'=>$Clojure, 'Prolog'=>$Prolog, 'Scala'=>$Scala));
   print ('Спасибо, результаты сохранены.<br/>');
 }
