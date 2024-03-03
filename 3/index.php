@@ -64,7 +64,7 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 try {
   $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)"."VALUES (:fio,:tel,:email,:date,:gen,:bio)");
   $stmt -> execute(array('fio'=>$fio,'tel'=>$tel,'email'=>$email,'date'=>$date,'gen'=>$gen,'bio'=>$bio));
-  $applicationId = $pdo->lastInsertId();
+  $applicationId = $db->lastInsertId();
 foreach ($_POST['languages'] as $language) {
     $stmt = $pdo->prepare("INSERT INTO application_languages (id_app, id_lang) VALUES (:applicationId, :languageId)");
     $stmt->bindParam(':applicationId', $applicationId);
