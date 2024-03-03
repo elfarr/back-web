@@ -25,10 +25,11 @@ if (empty($_POST['fio'])) {
   print('Заполните имя.<br/>');
   $errors = TRUE;
 }
-if (!preg_match('/^[a-zA-Zа-яА-Я\s]{1,150}$/', $fio)) {
+if (!preg_match('/^[а-яА-ЯёЁa-zA-Z\s]+$/', $fio)) {
   print("ФИО некорректно.");
   $errors = TRUE;
 }
+
 if (empty($_POST['date'])) {
   print('Заполните дату.<br/>');
   $errors = TRUE;
