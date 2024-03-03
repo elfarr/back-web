@@ -39,8 +39,8 @@ if (empty($_POST['tel'])) {
   $errors = TRUE;
 }
 $tel_length = strlen($_POST['tel']);
-if ($tel_length == 11 || $tel_length == 12) {
-  print('Телефон некоррентный.');
+if (!($tel_length == 11 || $tel_length == 12)) {
+  print('Телефон некорректный.');
   $errors = TRUE;
 }
 
@@ -60,7 +60,6 @@ if (empty($_POST['bio'])) {
 }
 
 if ($errors) {
-
   exit();
 }
 
