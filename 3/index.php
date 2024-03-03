@@ -66,7 +66,7 @@ try {
   $stmt -> execute(array('fio'=>$fio,'tel'=>$tel,'email'=>$email,'date'=>$date,'gen'=>$gen,'bio'=>$bio));
   $applicationId = $db->lastInsertId();
 foreach ($_POST['languages'] as $language) {
-    $stmt = $db->prepare("INSERT INTO application_languages (id_app, id_lang) VALUES (:applicationId, :languageId)");
+    $stmt = $db->prepare("INSERT INTO application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
     $stmt->bindParam(':applicationId', $applicationId);
     $stmt->bindParam(':languageId', $language);
     $stmt->execute();
