@@ -25,8 +25,9 @@ if (empty($_POST['fio'])) {
   print('Заполните имя.<br/>');
   $errors = TRUE;
 }
-if (!(preg_match('/^[а-яА-ЯёЁa-zA-Z\s]/', $fio))) {
-  print("ФИО некорректно.");
+if (preg_match('/^[a-zA-Zа-яА-Я\s]{1,120}$/', $fio)) {
+} else {
+  print('ФИО некорректно.');
   $errors = TRUE;
 }
 
