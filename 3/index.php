@@ -21,11 +21,12 @@ $gen = $_POST['gen'];
 $bio = $_POST['bio'];
 
 $errors = FALSE;
+
 if (empty($_POST['fio'])) {
   print('Заполните имя.<br/>');
   $errors = TRUE;
 }
-if (!preg_match('/^[a-zA-Zа-яА-Я\s]{1,120}$/u', $fio)) {
+if (!preg_match('/^[a-zA-Zа-яА-Я\s]{1,150}$/u', $fio)) {
   print('ФИО некорректно.');
   $errors = TRUE;
 }
@@ -54,7 +55,10 @@ if (empty($_POST['gen'])) {
   print('Заполните пол.<br/>');
   $errors = TRUE;
 }
-
+if (empty($_POST['languages'])) {
+  print('Выберите языки программирования.<br/>');
+  $errors = TRUE;
+}
 if (empty($_POST['bio'])) {
   print('Заполните биографию.<br/>');
   $errors = TRUE;

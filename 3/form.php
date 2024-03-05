@@ -31,35 +31,35 @@
         <input name="date" type="date"> </label>
       <br>
 
-        <label>Пол:<br /><input type="radio" value="m" name="gen" />
-          муж</label>
-        <label><input type="radio" value="f" name="gen" /> жен</label><br>
+      <label>Пол:<br /><input type="radio" value="m" name="gen" />
+        муж</label>
+      <label><input type="radio" value="f" name="gen" /> жен</label><br>
 
-        <label>
-          Любимый язык программирования:
-          <br>
-          <select name="languages[]" multiple="multiple">
-            <option value="1">Pascal</option>
-            <option value="2">C</option>
-            <option value="3">C++</option>
-            <option value="4">JavaScript</option>
-            <option value="5">PHP</option>
-            <option value="6">Python</option>
-            <option value="7">Java</option>
-            <option value="8">Haskel</option>
-            <option value="9">Clojure</option>
-            <option value="10">Prolog</option>
-            <option value="11">Scala</option>
-          </select> </label><br />
+      <label>
+        Любимый язык программирования:
+        <br>
+        <select name="languages[]" multiple="multiple">
+          <option value="1">Pascal</option>
+          <option value="2">C</option>
+          <option value="3">C++</option>
+          <option value="4">JavaScript</option>
+          <option value="5">PHP</option>
+          <option value="6">Python</option>
+          <option value="7">Java</option>
+          <option value="8">Haskel</option>
+          <option value="9">Clojure</option>
+          <option value="10">Prolog</option>
+          <option value="11">Scala</option>
+        </select> </label><br />
 
-        <label>
-          Биография:<br />
-          <textarea name="bio"></textarea></label><br />
+      <label>
+        Биография:<br />
+        <textarea name="bio"></textarea></label><br />
 
-        <label><input type="checkbox" name="check" required/> С контрактом
-          ознакомлен</label><br />
+      <label><input type="checkbox" name="check" required /> С контрактом
+        ознакомлен</label><br />
 
-        <input type="submit" value="Сохранить" />
+      <input type="submit" value="Сохранить" />
     </form>
   </div>
 </body>
