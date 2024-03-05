@@ -56,7 +56,7 @@
           Биография:<br />
           <textarea name="bio"></textarea></label><br />
 
-        <label><input type="checkbox" name="check" /> С контрактом
+        <label><input type="checkbox" name="check" required/> С контрактом
           ознакомлен</label><br />
 
         <input type="submit" value="Сохранить" />
