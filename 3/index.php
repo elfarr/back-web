@@ -70,7 +70,7 @@ if (empty($_POST['bio'])) {
   print('Заполните биографию.<br/>');
   $errors = TRUE;
 }
-if (preg_match('/^[a-zA-Z0-9,.!? ]+$/', $bio)) {
+if (!preg_match('/^[a-zA-Z0-9,.!? ]+$/', $bio)) {
   print('Биография содержит недопустимые символы.<br/>');
   $errors = TRUE;
 }
@@ -90,7 +90,7 @@ try {
   $applicationId = $db->lastInsertId();
  
   foreach ($_POST['languages'] as $language) {
-    $stmt = $conn->prepare("SELECT id FROM languages WHERE id= :id");
+    $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
     $stmt->bindParam(':id', $language);
     $stmt->execute();
     if ($stmt->rowCount() > 0) {
