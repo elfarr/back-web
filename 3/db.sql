@@ -9,23 +9,27 @@ CREATE TABLE application (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE language (
+CREATE TABLE languages (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  pascal int(1) NOT NULL DEFAULT 0,
-  c int(1) NOT NULL DEFAULT 0,
-  c_plus_plus int(1) NOT NULL DEFAULT 0,
-  js int(1) NOT NULL DEFAULT 0,
-  php int(1) NOT NULL DEFAULT 0,
-  python int(1) NOT NULL DEFAULT 0,
-  java int(1) NOT NULL DEFAULT 0,
-  haskel int(1) NOT NULL DEFAULT 0,
-  clojure int(1) NOT NULL DEFAULT 0,
-  prolog int(1) NOT NULL DEFAULT 0,
-  scala int(1) NOT NULL DEFAULT 0,
+  title varchar(20) NOT NULL DEFAULT '',
   PRIMARY KEY (id)
 );
 
 CREATE TABLE application_language (
+  id int(100) unsigned NOT NULL AUTO_INCREMENT,
   id_lang int(10) unsigned NOT NULL,
-  id_app int(10) unsigned NOT NULL
+  id_app int(10) unsigned NOT NULL,
+  PRIMARY KEY (id)
 );
+
+INSERT INTO languages (title) VALUES ('Pascal');
+INSERT INTO languages (title) VALUES ('C');
+INSERT INTO languages (title) VALUES ('C_plus_plus');
+INSERT INTO languages (title) VALUES ('JavaScript');
+INSERT INTO languages (title) VALUES ('PHP');
+INSERT INTO languages (title) VALUES ('Python');
+INSERT INTO languages (title) VALUES ('Java');
+INSERT INTO languages (title) VALUES ('Haskel');
+INSERT INTO languages (title) VALUES ('Clojure');
+INSERT INTO languages (title) VALUES ('Prolog');
+INSERT INTO languages (title) VALUES ('Scala');

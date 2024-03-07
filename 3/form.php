@@ -50,6 +50,7 @@
           <option value="9">Clojure</option>
           <option value="10">Prolog</option>
           <option value="11">Scala</option>
+          <option value="12">Несуществующий для теста</option>
         </select> </label><br />
 
       <label>
