@@ -70,7 +70,7 @@ if (empty($_POST['bio'])) {
   print('Заполните биографию.<br/>');
   $errors = TRUE;
 }
-if (!preg_match('/^[a-zA-Z0-9,.!? ]+$/', $bio)) {
+if (!preg_match('/^[a-zA-Zа-яА-Я0-9,.!? ]+$/', $bio)) {
   print('Биография содержит недопустимые символы.<br/>');
   $errors = TRUE;
 }

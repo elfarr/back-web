@@ -19,7 +19,9 @@ CREATE TABLE application_language (
   id int(100) unsigned NOT NULL AUTO_INCREMENT,
   id_lang int(10) unsigned NOT NULL,
   id_app int(10) unsigned NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_lang) REFERENCES languages(id),
+  FOREIGN KEY (id_app) REFERENCES application(id)
 );
 
 INSERT INTO languages (title) VALUES ('Pascal');
