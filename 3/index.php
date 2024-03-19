@@ -70,7 +70,7 @@ if (empty($_POST['bio'])) {
   print('Заполните биографию.<br/>');
   $errors = TRUE;
 }
-if (!preg_match('/^[a-zA-Zа-яА-Я0-9,.!? ]+$/', $bio)) {
+if (!preg_match('/^[a-zA-Zа-яА-Яе0-9,.!? ]+$/', $bio)) {
   print('Биография содержит недопустимые символы.<br/>');
   $errors = TRUE;
 }
@@ -84,26 +84,25 @@ $pass = '1682212';
 $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+foreach ($_POST['languages'] as $language) {
+  $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
+  $stmt->bindParam(':id', $language);
+  $stmt->execute();
+  if ($stmt->rowCount() == 0) {
+    print('Ошибка при добавлении языка.<br/>');
+    exit();
+  }
+}
 try {
   $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
   $stmt->execute(array('fio' => $fio, 'tel' => $tel, 'email' => $email, 'date' => $date, 'gen' => $gen, 'bio' => $bio));
   $applicationId = $db->lastInsertId();
  
   foreach ($_POST['languages'] as $language) {
-    $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
-    $stmt->bindParam(':id', $language);
-    $stmt->execute();
-    if ($stmt->rowCount() > 0) {
-     
-      $stmt = $db->prepare("INSERT INTO application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
+    $stmt = $db->prepare("INSERT INTO application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
     $stmt->bindParam(':applicationId', $applicationId);
     $stmt->bindParam(':languageId', $language);
     $stmt->execute();
-
-  } else {
-    print('Ошибка при добавлении языка.<br/>');
-    exit();
-  } 
 };
 
   print('Спасибо, результаты сохранены.<br/>'); }
