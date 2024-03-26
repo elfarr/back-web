@@ -54,13 +54,15 @@
         <br>
 
         <label>Пол:<br />
-          <input name="gen" <?php if ($errors['gen']) {
-                              print 'class="error"';
-                            } ?> value="<?php print $values['gen']; ?>" type="radio" value="m">
-          муж</label>
-        <label> <input name="gen" <?php if ($errors['gen']) {
-                                    print 'class="error"';
-                                  } ?> value="<?php print $values['gen']; ?>" type="radio" value="f"> жен</label><br>
+                    <input type="radio" name="gen" <?php 
+                if ($errors['gen']) {print 'class="error"' ;} 
+                if( $values['gen'] == 'man') {print "checked='checked'";}?> value="m">
+                    муж</label>
+                <label>
+                    <input type="radio" name="point1" <?php 
+                if ($errors['gen']) {print 'class="error"' ;} 
+                if( $values['gen'] == 'woman') {print "checked='checked'";}?> value="f">
+                    жен</label><br>
 
         <label>
           Любимый язык программирования:

@@ -56,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } else {
   // Проверяем ошибки.
   $errors = FALSE;
-  print('нет пола');
   if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
     setcookie('symbolfio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -92,7 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
   if (empty($_POST['gen'])) {
-    exit();
     setcookie('gen_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
