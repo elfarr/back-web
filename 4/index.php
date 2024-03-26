@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages = empty($_COOKIE['languages']) ? [] : unserialize($_COOKIE['languages']);
   include('form.php');
-  print($_POST['gen']);
+  print($_POST['tel']);
 }
 else {
   // Проверяем ошибки.
