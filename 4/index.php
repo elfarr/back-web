@@ -1,6 +1,5 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
-$messages = array();
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $messages = array();
   if (!empty($_COOKIE['save'])) {
@@ -57,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 } else {
   // Проверяем ошибки.
   $errors = FALSE;
+  print('нет пола');
   if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
     setcookie('symbolfio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
   if (empty($_POST['gen'])) {
-    print('нет пола');
+    exit();
     setcookie('gen_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
