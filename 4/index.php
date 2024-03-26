@@ -50,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['gen'] = empty($_COOKIE['gen_value']) ? '' : $_COOKIE['gen_value'];
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
-  if (isset($_COOKIE['languages'])) {
-    $savedLanguages = unserialize($_COOKIE['languages']);
-}
+  $languages = empty($_COOKIE['languages']) ? [] : unserialize($_COOKIE['languages']);
   include('form.php');
 }
 else {
@@ -98,7 +96,7 @@ else
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
   if (empty($_POST['gen'])) {
-    // Выдаем куку на день с флажком об ошибке в поле fio.
+    print('нет пола');
     setcookie('gen_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }

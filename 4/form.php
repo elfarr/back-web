@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <title>Задание 3</title>
+  <title>Задание 4</title>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
 
   <header>
     <img id="logo" src="logo.jpg" alt="Наш лого" />
-    <h1>Задание 3</h1>
+    <h1>Задание 4</h1>
   </header>
   <div class="form">
     <h2>Форма</h2>
