@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
+$messages = array();
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $messages = array();
   if (!empty($_COOKIE['save'])) {
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['symboltel_error'] = !empty($_COOKIE['symboltel_error']);
   $errors['languages_error'] = !empty($_COOKIE['languages_error']);
   $errors['symbemail_error'] = !empty($_COOKIE['symbemail_error']);
-  
+
   if ($errors['fio']) {
     setcookie('fio_error', '', 100000);
     $messages[] = '<div class="error">Заполните имя.</div>';
@@ -53,35 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages = empty($_COOKIE['languages']) ? [] : unserialize($_COOKIE['languages']);
   include('form.php');
-  print($_POST['tel']);
-}
-else {
+} else {
   // Проверяем ошибки.
   $errors = FALSE;
-  if (!preg_match("/^[а-я А-Я]+$/u",$_POST['fio'])){
+  if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
     setcookie('symbolfio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-}
-else 
+  }
   if (empty($_POST['fio'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('fio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else {
+  } else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('fio_value', $_POST['fio'], time() + 30 * 24 * 60 * 60);
   }
-  if (!preg_match('/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/',$_POST['tel'])) {
+  if (!preg_match('/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/', $_POST['tel'])) {
     setcookie('symboltel_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else if (empty($_POST['tel'])) {
+  } else if (empty($_POST['tel'])) {
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('tel_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else {
+  } else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('tel_value', $_POST['tel'], time() + 30 * 24 * 60 * 60);
   }
@@ -89,11 +84,10 @@ else
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('email_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else if (!preg_match("/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/",$_POST['email'])or(empty($_POST['email']))){
+  } else if (!preg_match("/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/", $_POST['email']) or (empty($_POST['email']))) {
     setcookie('symbemail_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE; }
-  else {
+    $errors = TRUE;
+  } else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
@@ -101,8 +95,7 @@ else
     print('нет пола');
     setcookie('gen_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else {
+  } else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('gen_value', $_POST['gen'], time() + 30 * 24 * 60 * 60);
   }
@@ -110,8 +103,7 @@ else
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('bio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else {
+  } else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
   }
@@ -119,8 +111,7 @@ else
     // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('date_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  }
-  else {
+  } else {
     // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
   }
@@ -129,27 +120,25 @@ else
     setcookie('languages_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
 
-    foreach($array as $key => $val){ 
-      if($val==0){
-          setcookie($key,'',100000);
-      } 
-  } 
-}
-else {
-  $languages = $_POST['languages'];
-  $languagesString = serialize($languages);
+    foreach ($array as $key => $val) {
+      if ($val == 0) {
+        setcookie($key, '', 100000);
+      }
+    }
+  } else {
+    $languages = $_POST['languages'];
+    $languagesString = serialize($languages);
 
-// Устанавливаем cookie
-setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
+    // Устанавливаем cookie
+    setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
 
-}
+  }
 
   if ($errors) {
     // При наличии ошибок перезагружаем страницу и завершаем работу скрипта.
     header('Location: index.php');
     exit();
-  }
-  else {
+  } else {
     // Удаляем Cookies с признаками ошибок.
     setcookie('fio_error', '', 100000);
     setcookie('bio_error', '', 100000);
@@ -163,7 +152,7 @@ setcookie('languages', $languagesString, time() + 3600, '/'); // cookie буде
   $pass = '1682212';
   $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  
+
   foreach ($_POST['languages'] as $language) {
     $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
     $stmt->bindParam(':id', $language);
@@ -177,19 +166,19 @@ setcookie('languages', $languagesString, time() + 3600, '/'); // cookie буде
     $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
     $stmt->execute(array('fio' => $fio, 'tel' => $tel, 'email' => $email, 'date' => $date, 'gen' => $gen, 'bio' => $bio));
     $applicationId = $db->lastInsertId();
-   
+
     foreach ($_POST['languages'] as $language) {
       $stmt = $db->prepare("INSERT INTO application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
       $stmt->bindParam(':applicationId', $applicationId);
       $stmt->bindParam(':languageId', $language);
       $stmt->execute();
-  };
-  
-    print('Спасибо, результаты сохранены.<br/>'); }
-    catch (PDOException $e) {
-      echo $e->getMessage();
-      exit();
-    }
+    };
+
+    print('Спасибо, результаты сохранены.<br/>');
+  } catch (PDOException $e) {
+    echo $e->getMessage();
+    exit();
+  }
 
   setcookie('save', '1');
   header('Location: index.php');
