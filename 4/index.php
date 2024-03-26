@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['symboltel_error'] = !empty($_COOKIE['symboltel_error']);
   $errors['languages_error'] = !empty($_COOKIE['languages_error']);
   $errors['symbemail_error'] = !empty($_COOKIE['symbemail_error']);
+  print($_POST['gen']);
   if ($errors['fio']) {
     setcookie('fio_error', '', 100000);
     $messages[] = '<div class="error">Заполните имя.</div>';
@@ -35,11 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
   if ($errors['tel']) {
     setcookie('tel_error', '', 100000);
-    $messages[] = '<div class="error">Заполните имя.</div>';
+    $messages[] = '<div class="error">Заполните номер телефона.</div>';
   }
   if ($errors['date']) {
     setcookie('date_error', '', 100000);
-    $messages[] = '<div class="error">Заполните имя.</div>';
+    $messages[] = '<div class="error">Заполните дату.</div>';
   }
 
   // Складываем предыдущие значения полей в массив, если есть.
