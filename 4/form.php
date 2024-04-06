@@ -89,7 +89,7 @@
           Биография:<br />
           <textarea name="bio" <?php if ($errors['bio']) {
                                   print 'class="error"';
-                                } ?>> <?php print $values['bio']; ?> </textarea></label><br />
+                                } ?>><?php print $values['bio']; ?></textarea></label><br />
 
         <label><input type="checkbox" name="check" required /> С контрактом
           ознакомлен</label><br />
