@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors = array();
   $errors['fio'] = !empty($_COOKIE['fio_error']);
   $errors['email'] = !empty($_COOKIE['email_error']);
-  $errors['point1'] = !empty($_COOKIE['point1_error']);
+  $errors['gen'] = !empty($_COOKIE['gen_error']);
   $errors['bio'] = !empty($_COOKIE['bio_error']);
   $errors['tel'] = !empty($_COOKIE['tel_error']);
   $errors['date'] = !empty($_COOKIE['date_error']);
@@ -40,8 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('date_error', '', 100000);
     $messages[] = '<div class="error">Заполните дату.</div>';
   }
-  if ($errors['point1']) {
-    setcookie('point1_error', '', 100000);
+  if ($errors['gen']) {
+    setcookie('gen_error', '', 100000);
     $messages[] = '<div class="error">Введите пол</div>';
 }
 if ($errors['symbolfio_error']) {
@@ -62,7 +62,7 @@ if ($errors['languages_error']) {
   $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
   $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
   $values['tel'] = empty($_COOKIE['tel_value']) ? '' : $_COOKIE['tel_value'];
-  $values['point1'] = empty($_COOKIE['point1_value']) ? '' : $_COOKIE['point1_value'];
+  $values['gen'] = empty($_COOKIE['gen_value']) ? '' : $_COOKIE['gen_value'];
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages =isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
@@ -99,12 +99,12 @@ else  {
   } else {
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
-  if (empty($_POST['point1'])) {
-    setcookie('point1_error', '1', time() + 24 * 60 * 60);
+  if (empty($_POST['gen'])) {
+    setcookie('gen_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
 }
 else{
-    setcookie('point1_value', $_POST['point1'], time() + 365 * 24 * 60 * 60);
+    setcookie('gen_value', $_POST['gen'], time() + 365 * 24 * 60 * 60);
 }
   if (empty($_POST['bio'])) {
     setcookie('bio_error', '1', time() + 24 * 60 * 60);

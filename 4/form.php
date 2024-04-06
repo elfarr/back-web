@@ -54,14 +54,14 @@
         <br>
         <br />
         <label>Пол:<br />
-        <input type="radio"  name="point1" <?php 
-                if ($errors['point1']) {print 'class="error"' ;} 
-                if( $values['point1'] == 'm') {print "checked='checked'";}?> value="m">
+        <input type="radio"  name="gen" <?php 
+                if ($errors['gen']) {print 'class="error"' ;} 
+                if( $values['gen'] == 'm') {print "checked='checked'";}?> value="m">
                     муж</label>
                 <label>
-                    <input type="radio" name="point1" <?php 
-                if ($errors['point1']) {print 'class="error"' ;} 
-                if( $values['point1'] == 'f') {print "checked='checked'";}?> value="f">
+                    <input type="radio" name="gen" <?php 
+                if ($errors['gen']) {print 'class="error"' ;} 
+                if( $values['gen'] == 'f') {print "checked='checked'";}?> value="f">
                     жен</label><br>
             </p>
         <label>
