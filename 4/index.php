@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
   $messages = array();
   if (!empty($_COOKIE['save'])) {
     setcookie('save', '', 100000);
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors = array();
   $errors['fio'] = !empty($_COOKIE['fio_error']);
   $errors['email'] = !empty($_COOKIE['email_error']);
-  $errors['gen'] = !empty($_COOKIE['gen_error']);
+  $errors['point1'] = !empty($_COOKIE['point1_error']);
   $errors['bio'] = !empty($_COOKIE['bio_error']);
   $errors['tel'] = !empty($_COOKIE['tel_error']);
   $errors['date'] = !empty($_COOKIE['date_error']);
@@ -26,10 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('email_error', '', 100000);
     $messages[] = '<div class="error">Заполните почту.</div>';
   }
-  if ($errors['gen']) {
-    setcookie('gen_error', '', 100000);
-    $messages[] = '<div class="error">Выберите пол.</div>';
-  }
+
   if ($errors['bio']) {
     setcookie('bio_error', '', 100000);
     $messages[] = '<div class="error">Заполните биографию.</div>';
@@ -42,88 +40,91 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('date_error', '', 100000);
     $messages[] = '<div class="error">Заполните дату.</div>';
   }
+  if ($errors['point1']) {
+    setcookie('point1_error', '', 100000);
+    $messages[] = '<div class="error">Введите пол</div>';
+}
+if ($errors['symbolfio_error']) {
+  setcookie('symbolfio_error', '', 100000);
+  $messages[] = '<div class="error">ФИО содержит недопустимые символы.</div>';
+}
 
+if ($errors['symboltel_error']) {
+  setcookie('symboltel_error', '', 100000);
+  $messages[] = '<div class="error">Укажите номер телефона в формате +7 (XXX) XXX-XX-XX.</div>';
+}
+if ($errors['languages_error']) {
+  setcookie('languages_error', '', 100000);
+  $messages[] = '<div class="error">Выберите языки.</div>';
+}
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
   $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
   $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
   $values['tel'] = empty($_COOKIE['tel_value']) ? '' : $_COOKIE['tel_value'];
-  $values['gen'] = empty($_COOKIE['gen_value']) ? '' : $_COOKIE['gen_value'];
+  $values['point1'] = empty($_COOKIE['point1_value']) ? '' : $_COOKIE['point1_value'];
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
-  $languages = empty($_COOKIE['languages']) ? [] : unserialize($_COOKIE['languages']);
+  $languages =isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
   include('form.php');
-} else {
-  // Проверяем ошибки.
+} 
+else  {
   $errors = FALSE;
   if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
     setcookie('symbolfio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
-  if (empty($_POST['fio'])) {
-    // Выдаем куку на день с флажком об ошибке в поле fio.
+  else if (empty($_POST['fio'])) {
     setcookie('fio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
-    // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('fio_value', $_POST['fio'], time() + 30 * 24 * 60 * 60);
   }
   if (!preg_match('/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/', $_POST['tel'])) {
     setcookie('symboltel_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  } else if (empty($_POST['tel'])) {
-    // Выдаем куку на день с флажком об ошибке в поле fio.
+  } 
+   else if (empty($_POST['tel'])) {
     setcookie('tel_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
-    // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('tel_value', $_POST['tel'], time() + 30 * 24 * 60 * 60);
   }
   if (empty($_POST['email'])) {
-    // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('email_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else if (!preg_match("/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/", $_POST['email']) or (empty($_POST['email']))) {
     setcookie('symbemail_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
-    // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
   }
-  if (empty($_POST['gen'])) {
-    setcookie('gen_error', '1', time() + 24 * 60 * 60);
+  if (empty($_POST['point1'])) {
+    setcookie('point1_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  } else {
-    // Сохраняем ранее введенное в форму значение на месяц.
-    setcookie('gen_value', $_POST['gen'], time() + 30 * 24 * 60 * 60);
-  }
+}
+else{
+    setcookie('point1_value', $_POST['point1'], time() + 365 * 24 * 60 * 60);
+}
   if (empty($_POST['bio'])) {
-    // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('bio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
-    // Сохраняем ранее введенное в форму значение на месяц.
     setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
   }
   if (empty($_POST['date'])) {
-    // Выдаем куку на день с флажком об ошибке в поле fio.
     setcookie('date_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else {
-    // Сохраняем ранее введенное в форму значение на месяц.
+
     setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
   }
 
   if (empty($_POST['languages'])) {
     setcookie('languages_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-
-    foreach ($array as $key => $val) {
-      if ($val == 0) {
-        setcookie($key, '', 100000);
-      }
-    }
-  } else {
+  } 
+  else {
     $languages = $_POST['languages'];
     $languagesString = serialize($languages);
 

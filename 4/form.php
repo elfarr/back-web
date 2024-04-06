@@ -31,18 +31,18 @@
     <h2>Форма</h2>
     <form action="index.php" method="POST" accept-charset="UTF-8" class="login">
       <label>
-        ФИО:<br> <input name="fio" <?php if ($errors['fio']) {
+        ФИО:<br> <input name="fio" <?php if ($errors['fio'] || $errors['symbolfio_error']) {
                                       print 'class="error"';
                                     } ?> value="<?php print $values['fio']; ?>"> </label><br>
       <label>
         Номер телефона :<br />
-        <input name="tel" <?php if ($errors['tel']) {
+        <input name="tel" <?php if ($errors['tel'] || $errors['symboltel_error']) {
                             print 'class="error"';
                           } ?> value="<?php print $values['tel']; ?>"> </label><br>
       <label>
         Email:<br />
         <input name="email" <?php if ($errors['email']) {
-                              print 'class="error"';
+                              print 'class="error"';  
                             } ?> value="<?php print $values['email']; ?>" type="email">
       </label><br>
 
@@ -52,42 +52,44 @@
                               print 'class="error"';
                             } ?> value="<?php print $values['date']; ?>" type="date">
         <br>
-
+        <br />
         <label>Пол:<br />
-                    <input type="radio" name="gen" <?php 
-                if ($errors['gen']) {print 'class="error"' ;} 
-                if( $values['gen'] == 'man') {print "checked='checked'";}?> value="m">
+        <input type="radio"  name="point1" <?php 
+                if ($errors['point1']) {print 'class="error"' ;} 
+                if( $values['point1'] == 'm') {print "checked='checked'";}?> value="m">
                     муж</label>
                 <label>
                     <input type="radio" name="point1" <?php 
-                if ($errors['gen']) {print 'class="error"' ;} 
-                if( $values['gen'] == 'woman') {print "checked='checked'";}?> value="f">
+                if ($errors['point1']) {print 'class="error"' ;} 
+                if( $values['point1'] == 'f') {print "checked='checked'";}?> value="f">
                     жен</label><br>
-
+            </p>
         <label>
           Любимый язык программирования:
           <br>
 
-          <select name="languages[]" multiple="multiple">
-            <option value="1">Pascal</option>
-            <option value="2" >C</option>
-            <option value="3">C++</option>
-            <option value="4">JavaScript</option>
-            <option value="5">PHP</option>
-            <option value="6">Python</option>
-            <option value="7">Java</option>
-            <option value="8">Haskel</option>
-            <option value="9" >Clojure</option>
-            <option value="10">Prolog</option>
-            <option value="11" >Scala</option>
-            <option value="12">Несуществующий для теста</option>
+          <select name="languages[]" multiple="multiple" <?php if ($errors['languages_error']) {
+                                  print 'class="error"';
+                                } ?>>
+            <option value="1"<?php echo in_array('1', $languages) ? 'selected' : ''; ?>>Pascal</option>
+            <option value="2" <?php echo in_array('2', $languages) ? 'selected' : ''; ?> >C</option>
+            <option value="3" <?php echo in_array('3', $languages) ? 'selected' : ''; ?>>C++</option>
+            <option value="4" <?php echo in_array('4', $languages) ? 'selected' : ''; ?>>JavaScript</option>
+            <option value="5" <?php echo in_array('5', $languages) ? 'selected' : ''; ?>>PHP</option>
+            <option value="6" <?php echo in_array('6', $languages) ? 'selected' : ''; ?>>Python</option>
+            <option value="7" <?php echo in_array('7', $languages) ? 'selected' : ''; ?>>Java</option>
+            <option value="8" <?php echo in_array('8', $languages) ? 'selected' : ''; ?>>Haskel</option>
+            <option value="9" <?php echo in_array('9', $languages) ? 'selected' : ''; ?>>Clojure</option>
+            <option value="10" <?php echo in_array('10', $languages) ? 'selected' : ''; ?>>Prolog</option>
+            <option value="11" <?php echo in_array('11', $languages) ? 'selected' : ''; ?>>Scala</option>
+            <option value="12" <?php echo in_array('12', $languages) ? 'selected' : ''; ?>>Несуществующий для теста</option>
           </select> </label><br />
 
         <label>
           Биография:<br />
           <textarea name="bio" <?php if ($errors['bio']) {
                                   print 'class="error"';
-                                } ?> value="<?php print $values['bio']; ?>"></textarea></label><br />
+                                } ?>> <?php print $values['bio']; ?> </textarea></label><br />
 
         <label><input type="checkbox" name="check" required /> С контрактом
           ознакомлен</label><br />
