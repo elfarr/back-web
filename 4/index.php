@@ -18,7 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['symboltel_error'] = !empty($_COOKIE['symboltel_error']);
   $errors['languages_error'] = !empty($_COOKIE['languages_error']);
   $errors['symbemail_error'] = !empty($_COOKIE['symbemail_error']);
-
+  $errors['languages_unknown'] = !empty($_COOKIE['languages_unknown']);
+  $errors['date_value_error'] = !empty($_COOKIE['date_value_error']);
+  $errors['bio_value_error'] = !empty($_COOKIE['bio_value_error']);
+  
+  
   if ($errors['fio']) {
     setcookie('fio_error', '', 100000);
     $messages[] = '<div class="error">Заполните имя.</div>';
@@ -57,6 +61,19 @@ if ($errors['languages_error']) {
   setcookie('languages_error', '', 100000);
   $messages[] = '<div class="error">Выберите языки.</div>';
 }
+if ($errors['languages_unknown']) {
+  setcookie('languages_unknown', '', 100000);
+  $messages[] = '<div class="error">Ошибка при добавлении языка.</div>';
+}
+if ($errors['date_value_error']) {
+  setcookie('date_value_error', '', 100000);
+  $messages[] = '<div class="error">Заполните дату в формате d.m.Y.</div>';
+}
+if ($errors['bio_value_error']) {
+  setcookie('bio_value_error', '', 100000);
+  $messages[] = '<div class="error">Биография содержит недопустимые символы.</div>';
+}
+
   // Складываем предыдущие значения полей в массив, если есть.
   $values = array();
   $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
@@ -77,9 +94,9 @@ else  {
   else if (empty($_POST['fio'])) {
     setcookie('fio_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  } else {
+  } 
     setcookie('fio_value', $_POST['fio'], time() + 30 * 24 * 60 * 60);
-  }
+
   if (!preg_match('/^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/', $_POST['tel'])) {
     setcookie('symboltel_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -87,47 +104,65 @@ else  {
    else if (empty($_POST['tel'])) {
     setcookie('tel_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  } else {
+  } 
     setcookie('tel_value', $_POST['tel'], time() + 30 * 24 * 60 * 60);
-  }
+
   if (empty($_POST['email'])) {
     setcookie('email_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } else if (!preg_match("/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/", $_POST['email']) or (empty($_POST['email']))) {
     setcookie('symbemail_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  } else {
+  } 
     setcookie('email_value', $_POST['email'], time() + 30 * 24 * 60 * 60);
-  }
-  if (empty($_POST['gen'])) {
+  if (empty($_POST['gen']) || ($_POST['gen']!="f" && $_POST['gen']!='m')) {
     setcookie('gen_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
 }
-else{
     setcookie('gen_value', $_POST['gen'], time() + 365 * 24 * 60 * 60);
-}
+
   if (empty($_POST['bio'])) {
     setcookie('bio_error', '1', time() + 24 * 60 * 60);
-    $errors = TRUE;
-  } else {
-    setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
   }
+ else if (!preg_match('/^[a-zA-Zа-яА-Яе0-9,.!? ]+$/', $_POST['bio'])) {
+    setcookie('bio_value_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+  }
+    setcookie('bio_value', $_POST['bio'], time() + 30 * 24 * 60 * 60);
+    $date_format = 'd.m.Y';
+    $date_timestamp = strtotime($_POST['date']);
+    $date_valid = date($date_format, $date_timestamp) === $_POST['date'];
   if (empty($_POST['date'])) {
     setcookie('date_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
-  } else {
-
-    setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
+  } 
+  else if (!$date_valid) {
+    setcookie('date_value_error', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
   }
+    setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
+    include 'p.php';
 
+    $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  
   if (empty($_POST['languages'])) {
     setcookie('languages_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } 
-  else {
+  else { 
+    foreach ($_POST['languages'] as $language) {
+    $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
+    $stmt->bindParam(':id', $language);
+    $stmt->execute();
+    if ($stmt->rowCount() == 0) {
+      setcookie('languages_unknown', '1', time() + 24 * 60 * 60);
+    $errors = TRUE;
+    }
+  } }
+  {
     $languages = $_POST['languages'];
-    $languagesString = serialize($languages);
-
+    $languagesString = serialize($languages); 
     // Устанавливаем cookie
     setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
 
@@ -146,20 +181,8 @@ else{
     setcookie('email_error', '', 100000);
     setcookie('tel_error', '', 100000);
   }
-  include 'p.php';
-
-  $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-  foreach ($_POST['languages'] as $language) {
-    $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
-    $stmt->bindParam(':id', $language);
-    $stmt->execute();
-    if ($stmt->rowCount() == 0) {
-      print('Ошибка при добавлении языка.<br/>');
-      exit();
-    }
-  }
+  
+  
   try {
     $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
     $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['fio']));
