@@ -71,18 +71,18 @@
           <select name="languages[]" multiple="multiple" <?php if ($errors['languages_error']) {
                                   print 'class="error"';
                                 } ?>>
-            <option value="1"<?php echo in_array('1', $languages) ? 'selected' : ''; ?>>Pascal</option>
-            <option value="2" <?php echo in_array('2', $languages) ? 'selected' : ''; ?> >C</option>
-            <option value="3" <?php echo in_array('3', $languages) ? 'selected' : ''; ?>>C++</option>
-            <option value="4" <?php echo in_array('4', $languages) ? 'selected' : ''; ?>>JavaScript</option>
-            <option value="5" <?php echo in_array('5', $languages) ? 'selected' : ''; ?>>PHP</option>
-            <option value="6" <?php echo in_array('6', $languages) ? 'selected' : ''; ?>>Python</option>
-            <option value="7" <?php echo in_array('7', $languages) ? 'selected' : ''; ?>>Java</option>
-            <option value="8" <?php echo in_array('8', $languages) ? 'selected' : ''; ?>>Haskel</option>
-            <option value="9" <?php echo in_array('9', $languages) ? 'selected' : ''; ?>>Clojure</option>
-            <option value="10" <?php echo in_array('10', $languages) ? 'selected' : ''; ?>>Prolog</option>
-            <option value="11" <?php echo in_array('11', $languages) ? 'selected' : ''; ?>>Scala</option>
-            <option value="12" <?php echo in_array('12', $languages) ? 'selected' : ''; ?>>Несуществующий для теста</option>
+            <option value="1"<?php echo is_array($languages) &&  in_array('1', $languages) ? 'selected' : ''; ?>>Pascal</option>
+            <option value="2" <?php echo is_array($languages) && in_array('2', $languages) ? 'selected' : ''; ?> >C</option>
+            <option value="3" <?php echo is_array($languages) && in_array('3', $languages) ? 'selected' : ''; ?>>C++</option>
+            <option value="4" <?php echo is_array($languages) && in_array('4', $languages) ? 'selected' : ''; ?>>JavaScript</option>
+            <option value="5" <?php echo is_array($languages) && in_array('5', $languages) ? 'selected' : ''; ?>>PHP</option>
+            <option value="6" <?php echo  is_array($languages) &&in_array('6', $languages) ? 'selected' : ''; ?>>Python</option>
+            <option value="7" <?php echo is_array($languages) && in_array('7', $languages) ? 'selected' : ''; ?>>Java</option>
+            <option value="8" <?php echo is_array($languages) && in_array('8', $languages) ? 'selected' : ''; ?>>Haskel</option>
+            <option value="9" <?php echo is_array($languages) && in_array('9', $languages) ? 'selected' : ''; ?>>Clojure</option>
+            <option value="10" <?php echo is_array($languages) && in_array('10', $languages) ? 'selected' : ''; ?>>Prolog</option>
+            <option value="11" <?php echo is_array($languages) && in_array('11', $languages) ? 'selected' : ''; ?>>Scala</option>
+            <option value="12" <?php echo is_array($languages) && in_array('12', $languages) ? 'selected' : ''; ?>>Несуществующий для теста</option>
           </select> </label><br />
 
         <label>

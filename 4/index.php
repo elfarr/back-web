@@ -87,7 +87,7 @@ if ($errors['bio_value_error']) {
   include('form.php');
 } 
 else  {
-  $languages = array();
+
   $errors = FALSE;
   if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
     setcookie('symbolfio_error', '1', time() + 24 * 60 * 60);
