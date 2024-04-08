@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $messages[] = 'Спасибо, результаты сохранены.';
   }
   $errors = array();
+  $languages = array();
   $errors['fio'] = !empty($_COOKIE['fio_error']);
   $errors['email'] = !empty($_COOKIE['email_error']);
   $errors['gen'] = !empty($_COOKIE['gen_error']);
@@ -136,7 +137,7 @@ else  {
     setcookie('date_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   } 
-  else if (!$date_valid) {
+  else if ($date_valid) {
     setcookie('date_value_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
