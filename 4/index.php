@@ -126,7 +126,7 @@ else  {
   if (empty($_POST['bio'])) {
     setcookie('bio_error', '1', time() + 24 * 60 * 60);
   }
- else if (!preg_match('/^[a-zA-Zа-яА-Яе0-9,.!? ]+$/', $_POST['bio'])) {
+ else if (!preg_match('/^[a-zA-Zа-яА-Я0-9,.!? ]+$/', $_POST['bio'])) {
     setcookie('bio_value_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
   }
@@ -187,7 +187,7 @@ else  {
   
   try {
     $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
-    $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['fio']));
+    $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
     $applicationId = $db->lastInsertId();
 
     foreach ($_POST['languages'] as $language) {
