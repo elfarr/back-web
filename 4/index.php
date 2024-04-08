@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $messages[] = 'Спасибо, результаты сохранены.';
   }
   $errors = array();
-  $languages = array();
+
   $errors['fio'] = !empty($_COOKIE['fio_error']);
   $errors['email'] = !empty($_COOKIE['email_error']);
   $errors['gen'] = !empty($_COOKIE['gen_error']);
@@ -87,6 +87,7 @@ if ($errors['bio_value_error']) {
   include('form.php');
 } 
 else  {
+  $languages = array();
   $errors = FALSE;
   if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
     setcookie('symbolfio_error', '1', time() + 24 * 60 * 60);
