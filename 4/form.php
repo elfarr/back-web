@@ -11,6 +11,13 @@
 
 <body>
 
+ 
+  ?>
+
+  <header>
+    <img id="logo" src="logo.jpg" alt="Наш лого" />
+    <h1>Задание 4</h1>
+  </header>
   <?php
   if (!empty($messages)) {
     print('<div id="messages">');
@@ -20,13 +27,7 @@
     }
     print('</div>');
   }
-
-  ?>
-
-  <header>
-    <img id="logo" src="logo.jpg" alt="Наш лого" />
-    <h1>Задание 4</h1>
-  </header>
+?>
   <div class="form">
     <h2>Форма</h2>
     <form action="index.php" method="POST" accept-charset="UTF-8" class="login">

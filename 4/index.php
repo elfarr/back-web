@@ -144,9 +144,9 @@ else  {
   }
     setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
     include 'p.php';
-
     $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
   
   if (empty($_POST['languages'])) {
     setcookie('languages_error', '1', time() + 24 * 60 * 60);
@@ -182,6 +182,14 @@ else  {
     setcookie('date_error', '', 100000);
     setcookie('email_error', '', 100000);
     setcookie('tel_error', '', 100000);
+    setcookie('symbolfio_error', '', 100000);
+    setcookie('symboltel_error', '', 100000);
+    setcookie('symbemail_error', '', 100000);
+
+    setcookie('date_value_error', '', 100000);
+    setcookie('languages_error', '', 100000);
+    setcookie('languages_unknown', '', 100000);
+    setcookie('bio_value_error', '', 100000);
   }
   
   
