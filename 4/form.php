@@ -11,8 +11,6 @@
 
 <body>
 
- 
-  ?>
 
   <header>
     <img id="logo" src="logo.jpg" alt="Наш лого" />
