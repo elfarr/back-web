@@ -37,18 +37,18 @@ else {
   $passLogin = $_POST['pass'];
   $logLogin = $_POST['login'];
 
-  $data = $db->prepare("SELECT pass FROM user where login = '$logLogin' ");
+  $data = $db->prepare("SELECT pass FROM application where login = '$logLogin' ");
   $data->execute();
   $pas = $data->fetch(PDO::FETCH_ASSOC); // g
 
-  if($pas['pass']!=$_POST['pass'] and $pas['login']!=$_POST['login'] and !empty( $pas['pass'])and !empty( $pas['login'])){     
+  if($pas['pass']!=$_POST['pass'] or $pas['login']!=$_POST['login'] or !empty( $pas['pass']) or !empty( $pas['login'])){     
     exit ("Логин или email не существует"); 
   }
   else{
       $_SESSION['login'] =  $logLogin;
       $_SESSION['pass'] =  $passLogin;
       $_SESSION['uid'] = $pas['id'];
-      echo 'вы успешно вошли';
+      print 'Вы успешно вошли';
     header('Location: index.php');
   }
     
