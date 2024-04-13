@@ -40,11 +40,15 @@ else {
   $data = $db->prepare("SELECT pass FROM application where login = '$logLogin' ");
   $data->execute();
   $pas = $data->fetch(PDO::FETCH_ASSOC); // g
-  if($pas['pass']!=$_POST['pass']){     
+  if(!$pas) {
+    exit("Логин или email не существует");
+}
+
+if($pas['pass'] != $_POST['pass']) {
     print_r($pas);
     print($_POST['pass']);
-    exit ("Логин или email не существует"); 
-  }
+    exit("Неверный пароль");
+}
   else{
       $_SESSION['login'] =  $logLogin;
       $_SESSION['pass'] =  $passLogin;
