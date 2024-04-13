@@ -200,7 +200,7 @@ else  {
     $errors = TRUE;
   }
     setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
-    include './4/p.php';
+    include '4/p.php';
 
     $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -265,7 +265,7 @@ else  {
     $passX = substr(md5($paddHash),0,8);
     setcookie('login', $login);
     setcookie('pass', $passX);
-    include './4/p.php';
+    include '4/p.php';
     $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   
