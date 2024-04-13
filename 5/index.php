@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['languages_unknown'] = !empty($_COOKIE['languages_unknown']);
   $errors['date_value_error'] = !empty($_COOKIE['date_value_error']);
   $errors['bio_value_error'] = !empty($_COOKIE['bio_value_error']);
-  
+  //
   
   if ($errors['fio']) {
     setcookie('fio_error', '', 100000);
@@ -94,7 +94,20 @@ if ($errors['bio_value_error']) {
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages =isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
 
-  if (!empty($_COOKIE['pass'])) {
+  if (empty($errors) && !empty($_COOKIE[session_name()]) &&
+      session_start() && !empty($_SESSION['login'])) {
+    // TODO: загрузить данные пользователя из БД
+    // и заполнить переменную $values,
+    // предварительно санитизовав.
+    printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
+  }
+
+
+
+
+
+  if (empty($errors) && !empty($_COOKIE[session_name()]) &&
+  session_start() && !empty($_SESSION['login'])) {
       try {
         include '../4/p.php';
         $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -129,8 +142,6 @@ while ($stmt1->fetch()) {
         }
   printf('Вход с логином %s,', $_SESSION['login']);
   }
-
-
 include('form.php');
 }
 else  {
@@ -216,7 +227,7 @@ else  {
     setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
 
   }
-
+}
   if ($errors) {
     // При наличии ошибок перезагружаем страницу и завершаем работу скрипта.
     header('Location: index.php');
@@ -230,8 +241,8 @@ else  {
     setcookie('email_error', '', 100000);
     setcookie('tel_error', '', 100000);
   } 
-  if (!empty($_COOKIE[session_name()]) &&
-  session_start() && !empty($_SESSION['login'])) {
+ if (!empty($_COOKIE[session_name()]) &&
+      session_start() && !empty($_SESSION['login'])) {
     include '../4/p.php';
 
     $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -285,7 +296,7 @@ else  {
     echo $e->getMessage();
     exit();
   }
-  }
+
   setcookie('save', '1');
   header('Location: index.php');
 }

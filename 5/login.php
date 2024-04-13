@@ -4,16 +4,19 @@
 
 
 header('Content-Type: text/html; charset=UTF-8');
-
-session_start(); // google
+$session_started = false;
+if ($_COOKIE[session_name()] && session_start()) {
+  $session_started = true;
+  if (!empty($_SESSION['login'])) {
+    echo '<a href="logout.php">Выход</a>';
+  } else {
+      // Если сессии нет, выводим кнопку "Войти"
+      echo '<a href="login.php">Войти</a>';
+}
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  ?>
+  
 
-if (!empty($_SESSION['login'])) {
-  
-  header('Location: index.php');
-  
-}else{
-?>
 <html lang="ru">
 
 <head>
@@ -24,9 +27,26 @@ if (!empty($_SESSION['login'])) {
 </head>
 
 <body>
+<header>
+    <img id="logo" src="logo.jpg" alt="Наш лого" />
+    <h1>Задание 5</h1>
+  </header>
 
+  <div class="form">
+    <h2>Форма</h2>
+    <form action="login.php" method="POST" accept-charset="UTF-8" class="login">
+    <input name="login" />
+    <input name="pass" />
+    <input type="submit" value="Войти" />
+    </form>
+  </div>
+</body>
+
+</html>
+</body>
+
+</html>
 <?php
-}
 }
 else {
   include '../4/p.php';
@@ -50,6 +70,9 @@ if($pas['pass'] != $_POST['pass']) {
     exit("Неверный пароль");
 }
   else{
+    if (!$session_started) {
+      session_start();
+    }
       $_SESSION['login'] =  $logLogin;
       $_SESSION['pass'] =  $passLogin;
       $_SESSION['uid'] = $pas['id'];
@@ -57,25 +80,7 @@ if($pas['pass'] != $_POST['pass']) {
     header('Location: index.php');
   }
     
-}
+}}
 ?>
 
-  <header>
-    <img id="logo" src="logo.jpg" alt="Наш лого" />
-    <h1>Задание 5</h1>
-  </header>
-
-  <div class="form">
-    <h2>Форма</h2>
-    <form action="login.php" method="POST" accept-charset="UTF-8" class="login">
-    <input name="login" />
-    <input name="pass" />
-    <input type="submit" value="Войти" />
-    </form>
-  </div>
-</body>
-
-</html>
-</body>
-
-</html>
+  

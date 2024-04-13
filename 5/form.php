@@ -28,6 +28,7 @@
 ?>
   <div class="form">
     <h2>Форма</h2>
+    <a href="login.php">Войти</a>
     <form action="index.php" method="POST" accept-charset="UTF-8" class="login">
       <label>
         ФИО:<br> <input name="fio" <?php if ($errors['fio'] || $errors['symbolfio_error']) {
