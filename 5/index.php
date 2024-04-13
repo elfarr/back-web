@@ -93,11 +93,8 @@ if ($errors['bio_value_error']) {
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages =isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
-  print($_COOKIE[session_name()]);
-  print($_SESSION['login']);
-  print(session_start());
-  if (!empty($_COOKIE[session_name()]) and session_start() and 
-  empty($errors) and !empty($_SESSION['login'])) {
+
+  if (!empty($_COOKIE['pass'])) {
       try {
         include '../4/p.php';
         $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -233,7 +230,8 @@ else  {
     setcookie('email_error', '', 100000);
     setcookie('tel_error', '', 100000);
   } 
-  if (!empty($_SESSION['login']) and empty($errors)) {
+  if (!empty($_COOKIE[session_name()]) &&
+  session_start() && !empty($_SESSION['login'])) {
     include '../4/p.php';
 
     $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
