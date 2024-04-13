@@ -93,7 +93,9 @@ if ($errors['bio_value_error']) {
   $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages =isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
-  
+  print($_COOKIE[session_name()]);
+  print($_SESSION['login']);
+  print(session_start());
   if (!empty($_COOKIE[session_name()]) and session_start() and 
   empty($errors) and !empty($_SESSION['login'])) {
       try {
