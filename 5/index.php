@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         strip_tags($_COOKIE['pass']));
     }
   }
-  $errors = array();
 
+  $errors = array();
   $errors['fio'] = !empty($_COOKIE['fio_error']);
   $errors['email'] = !empty($_COOKIE['email_error']);
   $errors['gen'] = !empty($_COOKIE['gen_error']);
@@ -105,7 +105,8 @@ if ($errors['bio_value_error']) {
           
 
           $stmt = $db->prepare("SELECT names,tel,email,dateB,gender,biography FROM application WHERE id = ?");
-          $stmt->execute();
+          $stmt->execute([$_SESSION['uid']]);
+          $row=$stmt->fetch(PDO::FETCH_ASSOC);
           foreach ($stmt as $row) {
             $values['fio'] = $row['names'];
             $values['email'] = $row['email'];
@@ -117,6 +118,7 @@ if ($errors['bio_value_error']) {
 
 
           $stmt1  = $db->prepare("SELECT id_lang FROM application_languages where login = ? AND pass = ?");  
+          $stmt1->bindParam($_SESSION['login'],$_SESSION['pass']);
 $stmt1->execute();
 $languages = array();
 while ($stmt1->fetch()) {
@@ -230,7 +232,14 @@ else  {
     setcookie('tel_error', '', 100000);
   } 
   if (!empty($_SESSION['login']) and empty($errors)) {
-  try {
+    include '../4/p.php';
+
+    $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $logForm = $_SESSION['login'];
+    $passForm = $_SESSION['pass'];
+    $user_id = $db->lastInsertId();
+    try {
     $stmt = $db->prepare("UPDATE application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
     $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
     $applicationId = $db->lastInsertId();
