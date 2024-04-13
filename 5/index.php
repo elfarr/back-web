@@ -259,8 +259,9 @@ else  {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   
   try {
-    $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
-    $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
+    $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography,hash,login,pass)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio,:hash,:login,:pass)");
+    $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio'],'hash'=> $paddHash,
+    'login'=> $login,'pass'=>$passX));
     $applicationId = $db->lastInsertId();
 
     foreach ($_POST['languages'] as $language) {
