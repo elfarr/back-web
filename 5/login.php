@@ -42,6 +42,7 @@ else {
   $pas = $data->fetch(PDO::FETCH_ASSOC); // g
   if($pas['pass']!=$_POST['pass']){     
     print_r($pas);
+    print($_POST['pass']);
     exit ("Логин или email не существует"); 
   }
   else{
