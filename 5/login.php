@@ -37,7 +37,7 @@ else {
   $passLogin = $_POST['pass'];
   $logLogin = $_POST['login'];
 
-  $data = $db->prepare("SELECT pass FROM form where login = '$logLogin' ");
+  $data = $db->prepare("SELECT pass FROM user where login = '$logLogin' ");
   $data->execute();
   $pas = $data->fetch(PDO::FETCH_ASSOC); // g
 
