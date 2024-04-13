@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('pass', '', 100000);
     $messages[] = 'Спасибо, результаты сохранены.';
     if (!empty($_COOKIE['pass'])) {
-      $messages[] = sprintf('Войдите <a href="login.php">войти</a> с логином <strong>%s</strong>
+      $messages[] = sprintf('<a href="login.php">Войдите</a> с логином <strong>%s</strong>
         и паролем <strong>%s</strong> для изменения данных.',
         strip_tags($_COOKIE['login']),
         strip_tags($_COOKIE['pass']));
@@ -97,42 +97,31 @@ if ($errors['bio_value_error']) {
   if (!empty($_COOKIE[session_name()]) and session_start() and 
   empty($errors) and !empty($_SESSION['login'])) {
       try {
-        include 'p.php';
+        include '../4/p.php';
         $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
           $log = $_SESSION['login'];
           $passForm = $_SESSION['pass'];
           
-          $data = $db->prepare("SELECT name,email,date,gender,limbs,agree FROM form where id = ?"); 
-          $data->execute([$_SESSION['uid']]);
-          $row=$data->fetch(PDO::FETCH_ASSOC);
-          // foreach ($data as $row) {
-            $values['name'] = $row['name'];
-            $values['email'] = $row['email'];
-            $values['bthD'] = $row['date'];
-            $values['point1'] = $row['gender'];
-            $values['point2'] = $row['limbs'];
-            $values['biograf'] = $row['biograf'];
-            $values['checkk'] =$row['agree'];
-          // }
-          $stmt1  = $db->prepare("SELECT superpower FROM superpowers where login = ? AND pass = ?");  
-          $stmt1->bindParam($_SESSION['login'],$_SESSION['pass']);
-          $stmt1->execute();
-          $stmt2=$stmt1->fetchALL();
-         
-          for($i=0;$i<4;$i++){
 
-              if($stmt2[$i]['superpower']=='бессмертие'){
-                  $values['sup1']= 'бессмертие';
-              }
-              if($stmt2[$i]['superpower']=='прохождение сквозь стены'){
-                  $values['sup2']= 'прохождение сквозь стены';
-              }
-              if($stmt2[$i]['superpower']=='левитация'){
-                  $values['sup3']= 'левитация';
-              }
-          }
-          
+          $stmt = $db->prepare("SELECT names,tel,email,dateB,gender,biography FROM application WHERE id = ?");
+          $stmt->execute();
+          foreach ($stmt as $row) {
+            $values['fio'] = $row['names'];
+            $values['email'] = $row['email'];
+            $values['tel'] = $row['dateB'];
+            $values['gen'] = $row['gender'];
+            $values['bio'] = $row['limbs'];
+            $values['date'] = $row['biography'];
+           }
+
+
+          $stmt1  = $db->prepare("SELECT id_lang FROM application_languages where login = ? AND pass = ?");  
+$stmt1->execute();
+$languages = array();
+while ($stmt1->fetch()) {
+    $languages[] = $id_lang;
+}
           } catch(PDOException $e) {
             echo 'Ошибка: ' . $e->getMessage();
             exit();
