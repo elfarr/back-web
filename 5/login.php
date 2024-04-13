@@ -20,22 +20,19 @@ if (!empty($_SESSION['login'])) {
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <title>Задание 4</title>
+  <title>Задание 5</title>
 </head>
 
 <body>
-<form action="login.php" method="post">
-    <input name="login" />
-    <input name="pass" />
-    <input type="submit" value="Войти" />
-</form>
+
 <?php
 }
 }
 else {
-  $user = 'u47509';
-  $pass = '2635406';
-  $db = new PDO('mysql:host=localhost;dbname=u47509', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+  include '../4/p.php';
+
+  $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   $passLogin = $_POST['pass'];
   $logLogin = $_POST['login'];
