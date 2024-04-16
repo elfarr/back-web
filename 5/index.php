@@ -85,16 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $messages[] = '<div class="error">Биография содержит недопустимые символы.</div>';
   }
 
-    // Складываем предыдущие значения полей в массив, если есть.
-    $values = array();
-    $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
-    $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
-    $values['tel'] = empty($_COOKIE['tel_value']) ? '' : $_COOKIE['tel_value'];
-    $values['gen'] = empty($_COOKIE['gen_value']) ? '' : $_COOKIE['gen_value'];
-    $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
-    $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
-    $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
-  
+  // Складываем предыдущие значения полей в массив, если есть.
+  $values = array();
+  $values['fio'] = empty($_COOKIE['fio_value']) ? '' : $_COOKIE['fio_value'];
+  $values['email'] = empty($_COOKIE['email_value']) ? '' : $_COOKIE['email_value'];
+  $values['tel'] = empty($_COOKIE['tel_value']) ? '' : $_COOKIE['tel_value'];
+  $values['gen'] = empty($_COOKIE['gen_value']) ? '' : $_COOKIE['gen_value'];
+  $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
+  $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
+  $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
+
 
   if (
     empty($errors) && !empty($_COOKIE[session_name()]) &&
@@ -238,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $passForm = $_SESSION['pass'];
     $user_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("UPDATE application (names,tel,email,dateB,gender,biography)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio)");
+      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio");
       $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
       $applicationId = $db->lastInsertId();
 

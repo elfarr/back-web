@@ -6,9 +6,7 @@ header('Content-Type: text/html; charset=UTF-8');
 $session_started = false;
 if ($_COOKIE[session_name()] && session_start()) {
   $session_started = true;
-    echo '<a href="logout.php">Выйти</a>';
 }
-else echo '<a href="login.php">Войти</a>';
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   ?>
   
