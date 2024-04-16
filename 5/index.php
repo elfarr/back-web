@@ -95,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['bio'] = empty($_COOKIE['bio_value']) ? '' : $_COOKIE['bio_value'];
     $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
     $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
-    printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
   
 
   if (
