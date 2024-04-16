@@ -27,8 +27,17 @@
   }
 ?>
   <div class="form">
-    <h2>Форма</h2>
-    <a href="login.php">Войти</a>
+    <h2>Форма регистрации</h2>
+    <div class="container">
+        <?php
+            session_start();
+            if(isset($_SESSION['user'])) {
+                echo '<a href="logout.php" class="btn btn-danger">Выйти</a>';
+            } else {
+                echo '<a href="login.php" class="btn btn-primary">Войти</a>';
+            }
+        ?>
+    </div>
     <form action="index.php" method="POST" accept-charset="UTF-8" class="login">
       <label>
         ФИО:<br> <input name="fio" <?php if ($errors['fio'] || $errors['symbolfio_error']) {

@@ -243,11 +243,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $applicationId = $db->lastInsertId();
 
       foreach ($_POST['languages'] as $language) {
-        $stmt = $db->prepare("UPDATE application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
+        $stmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id_app = :applicationId");
         $stmt->bindParam(':applicationId', $applicationId);
         $stmt->bindParam(':languageId', $language);
         $stmt->execute();
-      };
+    }
+    
 
       print('Спасибо, результаты сохранены.<br/>');
     } catch (PDOException $e) {
