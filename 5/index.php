@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('save', '', 100000);
     setcookie('login', '', 100000);
     setcookie('pass', '', 100000);
-    $messages[] = 'Спасибо, результаты сохранены.';
+    $messages[] = 'Спасибо, результаты сохранены. ';
     if (!empty($_COOKIE['pass'])) {
       $messages[] = sprintf(
         '<a href="login.php">Войдите</a> с логином <strong>%s</strong>
@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $errors['languages_unknown'] = !empty($_COOKIE['languages_unknown']);
   $errors['date_value_error'] = !empty($_COOKIE['date_value_error']);
   $errors['bio_value_error'] = !empty($_COOKIE['bio_value_error']);
-  //
 
   if ($errors['fio']) {
     setcookie('fio_error', '', 100000);

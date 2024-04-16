@@ -2,17 +2,13 @@
 
 <?php
 
-
 header('Content-Type: text/html; charset=UTF-8');
 $session_started = false;
 if ($_COOKIE[session_name()] && session_start()) {
   $session_started = true;
-  if (!empty($_SESSION['login'])) {
-    echo '<a href="logout.php">Выход</a>';
-  } else {
-      // Если сессии нет, выводим кнопку "Войти"
-      echo '<a href="login.php">Войти</a>';
+    echo '<a href="logout.php">Выйти</a>';
 }
+else echo '<a href="login.php">Войти</a>';
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   ?>
   
@@ -80,7 +76,7 @@ if($pas['pass'] != $_POST['pass']) {
     header('Location: index.php');
   }
     
-}}
+}
 ?>
 
   
