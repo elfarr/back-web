@@ -225,6 +225,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     setcookie('date_error', '', 100000);
     setcookie('email_error', '', 100000);
     setcookie('tel_error', '', 100000);
+    setcookie('symbolfio_error', '', 100000);
+    setcookie('languages_error', '', 100000);
+    setcookie('symbemail_error', '', 100000);
+    setcookie('languages_unknown', '', 100000);
+    setcookie('bio_value_error', '', 100000);
+    setcookie('date_value_error', '', 100000);
   }
   if (
     !empty($_COOKIE[session_name()]) &&
