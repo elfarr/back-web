@@ -65,8 +65,7 @@ else {
   if(!$pas) {
     exit("Логин или email не существует");
 }
-else {print($pas); }
-echo('мы тут');
+  echo($pas); 
     if (!$session_started) {
       session_start();
     }
