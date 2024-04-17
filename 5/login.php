@@ -73,6 +73,7 @@ if($pas['pass'] != $_POST['pass']) {
 }
     if (!$session_started) {
       session_start();
+    }
       $_SESSION['login'] =  $logLogin;
       $_SESSION['pass'] =  $passLogin;
       $_SESSION['uid'] = $pas['id'];
@@ -80,7 +81,6 @@ if($pas['pass'] != $_POST['pass']) {
     header('Location: index.php');
   }
     
-}
 ?>
 
   
