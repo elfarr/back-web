@@ -61,11 +61,12 @@ else {
   $data = $db->prepare("SELECT pass FROM application where login = '$logLogin' ");
   $data->execute();
   $pas = $data->fetch(PDO::FETCH_ASSOC); 
-  print($pas);
+  print(1);
   if(!$pas) {
     exit("Логин или email не существует");
-}
-  echo($pas); 
+  }
+  print(2);
+  
     if (!$session_started) {
       session_start();
     }
