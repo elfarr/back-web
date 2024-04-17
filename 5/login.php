@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 else {
   include '../4/p.php';
-  echo('мы тут');
+  print('мы тут');
   $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -65,7 +65,7 @@ else {
   if(!$pas) {
     exit("Логин или email не существует");
 }
-
+else print($pas);
 if($pas['pass'] != $_POST['pass']) {
     print_r($pas);
     print($_POST['pass']);
