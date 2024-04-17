@@ -73,7 +73,7 @@ echo('мы тут');
       $_SESSION['login'] =  $logLogin;
       $_SESSION['pass'] =  $passLogin;
       $_SESSION['uid'] = $pas['id'];
-      echo('Вы успешно вошли');
+      print('Вы успешно вошли');
     header('Location: index.php');
   }
     
