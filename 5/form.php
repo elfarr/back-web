@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <title>Задание 4</title>
+  <title>Задание 5</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 
   <header>
     <img id="logo" src="logo.jpg" alt="Наш лого" />
-    <h1>Задание 4</h1>
+    <h1>Задание 5</h1>
   </header>
   <?php
   if (!empty($messages)) {
@@ -26,18 +26,19 @@
     print('</div>');
   }
 ?>
-  <div class="form">
-    <h2>Форма регистрации</h2>
-    <div class="container">
+<div class="container">
         <?php
             session_start();
             if(isset($_SESSION['login'])) {
-                echo '<a href="logout.php" class="btn btn-danger">Выйти</a>';
+                echo '<a href="logout.php" class="btn btn-danger type="reset"">Выйти</a>';
             } else {
                 echo '<a href="login.php" class="btn btn-outline-info">Войти</a>';
             }
         ?>
-    </div>
+    </div>ss
+  <div class="form">
+    <h2>Форма регистрации</h2>
+    
     <form action="index.php" method="POST" accept-charset="UTF-8" class="login">
       <label>
         ФИО:<br> <input name="fio" <?php if ($errors['fio'] || $errors['symbolfio_error']) {

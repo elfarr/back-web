@@ -107,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $log = $_SESSION['login'];
       $passForm = $_SESSION['pass'];
 
-      $stmt = $db->prepare("SELECT names,tel,email,dateB,gender,biography FROM application WHERE id = ?");
+      $stmt = $db->prepare("SELECT names,tel,email,dateB,gender,biography FROM application WHERE login = ? AND pass = ?");
+      $stmt->bindParam($_SESSION['login'], $_SESSION['pass']);
       $stmt->execute([$_SESSION['uid']]);
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       foreach ($stmt as $row) {
@@ -119,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['date'] = $row['biography'];
       }
 
-
+      
       $stmt1  = $db->prepare("SELECT id_lang FROM application_languages where login = ? AND pass = ?");
       $stmt1->bindParam($_SESSION['login'], $_SESSION['pass']);
       $stmt1->execute();
@@ -244,19 +245,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $passForm = $_SESSION['pass'];
     $user_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio");
+      $stmt = $pdo->prepare("SELECT id FROM application WHERE login = :login AND password = :password");
+      $stmt->bindParam(':login', $logForm);
+      $stmt->bindParam(':password', $passForm);
+      $stmt->execute();
+      
+      // Получение результата
+      $row = $stmt->fetch();
+      if ($row) {
+          $applicationId = $row['id'];
+          // Обновление значений столбца id_lang в таблице application_language
+          $languageId = $_POST['languageId'];
+          $updateStmt = $pdo->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
+          $updateStmt->bindParam(':languageId', $languageId);
+          $updateStmt->bindParam(':applicationId', $applicationId);
+          $updateStmt->execute();
+      }
+      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  where login = ? AND pass = ?");
+      $stmt->bindParam($_SESSION['login'], $_SESSION['pass']);
       $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
-      $applicationId = $db->lastInsertId();
-
-      foreach ($_POST['languages'] as $language) {
-        $stmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id_app = :applicationId");
-        $stmt->bindParam(':applicationId', $applicationId);
-        $stmt->bindParam(':languageId', $language);
-        $stmt->execute();
-    }
-    
-
       print('Спасибо, результаты сохранены.<br/>');
+    
     } catch (PDOException $e) {
       echo $e->getMessage();
       exit();
