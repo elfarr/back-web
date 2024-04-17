@@ -245,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $passForm = $_SESSION['pass'];
     $user_id = $db->lastInsertId();
     try {
-      $stmt = $pdo->prepare("SELECT id FROM application WHERE login = :login AND password = :password");
+      $stmt = $db->prepare("SELECT id FROM application WHERE login = :login AND password = :password");
       $stmt->bindParam(':login', $logForm);
       $stmt->bindParam(':password', $passForm);
       $stmt->execute();
@@ -256,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
           $applicationId = $row['id'];
           // Обновление значений столбца id_lang в таблице application_language
           $languageId = $_POST['languageId'];
-          $updateStmt = $pdo->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
+          $updateStmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
           $updateStmt->bindParam(':languageId', $languageId);
           $updateStmt->bindParam(':applicationId', $applicationId);
           $updateStmt->execute();

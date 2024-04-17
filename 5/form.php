@@ -35,7 +35,7 @@
                 echo '<a href="login.php" class="btn btn-outline-info">Войти</a>';
             }
         ?>
-    </div>ss
+    </div>
   <div class="form">
     <h2>Форма регистрации</h2>
     
