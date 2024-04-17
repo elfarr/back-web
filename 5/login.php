@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   <div class="form">
     <h2>Форма входа</h2>
-    <form action="login.php" method="POST" accept-charset="UTF-8" class="login">
+    <form action="" method="POST" accept-charset="UTF-8" class="login">
     <input name="login" />
     <input name="pass" />
     <input type="submit" value="Войти" />
