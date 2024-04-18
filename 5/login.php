@@ -49,7 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $passLogin = $_POST['pass'];
     $logLogin = $_POST['login'];
 
-    $data = $db->prepare("SELECT pass FROM application where login = ?");
+    $data = $db->prepare("SELECT id, pass FROM application where login = ?");
+
     $data->execute([$logLogin]);
     $pas = $data->fetch(PDO::FETCH_ASSOC);
     print_r($pas, true);
