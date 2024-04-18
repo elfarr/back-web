@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data->execute([$logLogin]);
     $pas = $data->fetch(PDO::FETCH_ASSOC);
     print_r($pas, true);
-
+    exit();
     if (!$pas) {
         exit("Логин или email не существует");
     }
