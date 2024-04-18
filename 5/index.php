@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   if (
     empty($errors) && !empty($_COOKIE[session_name()]) &&
-    session_start() && !empty($_SESSION['login'])
+    $session_started && !empty($_SESSION['login'])
   ) {
     try {
       include '../4/p.php';
