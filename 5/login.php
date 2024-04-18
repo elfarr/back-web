@@ -66,7 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $_SESSION['pass'] =  $passLogin;
     // Здесь необходимо получить id пользователя из базы данных и установить его в сессию
     $_SESSION['uid'] = $pas['id'];
-    echo 'Вы успешно вошли';
+    print( $_SESSION['login']);
+    print( $_SESSION['pass']);
+    print( $_SESSION['uid']);
     // После вывода сообщения выполним перенаправление
     header('Location: ./');
     exit();
