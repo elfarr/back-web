@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = $db->prepare("SELECT pass FROM application where login = ?");
     $data->execute([$logLogin]);
     $pas = $data->fetch(PDO::FETCH_ASSOC);
-    error_log($pas);
+    error_log(print_r($pas, true));
 
     if (!$pas) {
         exit("Логин или email не существует");
