@@ -52,11 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = $db->prepare("SELECT pass FROM application where login = ?");
     $data->execute([$logLogin]);
     $pas = $data->fetch(PDO::FETCH_ASSOC);
+    error_log($pas);
 
     if (!$pas) {
         exit("Логин или email не существует");
     }
-
+    
     if (!$session_started) {
         session_start();
     }
@@ -66,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Здесь необходимо получить id пользователя из базы данных и установить его в сессию
     $_SESSION['uid'] = $pas['id'];
     echo 'Вы успешно вошли';
+    // После вывода сообщения выполним перенаправление
     header('Location: index.php');
     exit();
 }
