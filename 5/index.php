@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt1  = $db->prepare("SELECT id_lang FROM application_language where login = ? AND pass = ?");
       $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
       
-      $languages = array();
+      //$languages = array();
       while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
         array_push($language, strip_tags($row['id_lang']));
       }
@@ -198,7 +198,7 @@ else {
   } else {
     foreach ($_POST['languages'] as $language) {
       $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
-      $stmt->execute($language);
+      $stmt->execute(array(':id' => $language));
       if ($stmt->rowCount() == 0) {
         setcookie('languages_unknown', '1', time() + 24 * 60 * 60);
         $errors = TRUE;
