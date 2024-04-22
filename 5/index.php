@@ -245,11 +245,11 @@ else {
     try {
       $stmt = $db->prepare("SELECT id FROM application WHERE login = ? AND pass = ?");
       $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
-      
+  
       $row = $stmt->fetch();
       if ($row) {
           $applicationId = $row['id'];
-          foreach ($_POST['languageId'] as $languageId) {
+          foreach ($languages as $languageId) {
               $updateStmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
               $updateStmt->bindParam(':languageId', $languageId);
               $updateStmt->bindParam(':applicationId', $applicationId);
