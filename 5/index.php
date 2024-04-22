@@ -95,11 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $values['date'] = empty($_COOKIE['date_value']) ? '' : $_COOKIE['date_value'];
   $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
 
-  print('!');
 
-  session_start();
+  //session_start();
   if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
-    print('**');
     try {
       include '../4/p.php';
       $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
