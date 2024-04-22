@@ -3,12 +3,17 @@
 <?php
 
 header('Content-Type: text/html; charset=UTF-8');
-$session_started = false;
+session_start();
 
 // Проверяем, была ли уже начата сессия
-if (!empty($_COOKIE[session_name()]) && session_status() === PHP_SESSION_ACTIVE) {
-    $session_started = true;
-}
+if (!empty($_SESSION['login'])) {
+    // Если есть логин в сессии, то пользователь уже авторизован.
+    // TODO: Сделать выход (окончание сессии вызовом session_destroy()
+    //при нажатии на кнопку Выход).
+    session_destroy();
+    // Делаем перенаправление на форму.
+    header('Location: ./');
+  }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 ?>
