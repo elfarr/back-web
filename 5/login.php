@@ -69,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     print( $_SESSION['login']);
     print( $_SESSION['pass']);
     print( $_SESSION['uid']);
-    exit();
     // После вывода сообщения выполним перенаправление
     header('Location: ./');
     exit();

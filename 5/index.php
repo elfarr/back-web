@@ -96,10 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
 
 
-  if (
-    empty($errors) && !empty($_COOKIE[session_name()]) &&
-    $session_started && !empty($_SESSION['login'])
-  ) {
+  if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
     try {
       include '../4/p.php';
       $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -135,7 +132,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     printf('Вход с логином %s,', $_SESSION['login']);
   }
   include('form.php');
-} else {
+} 
+else {
 
   $errors = FALSE;
   if (!preg_match("/^[а-я А-Я]+$/u", $_POST['fio'])) {
