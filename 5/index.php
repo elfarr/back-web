@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       }
 
       
-      $stmt1  = $db->prepare("SELECT id_lang FROM application_languages where login = ? AND pass = ?");
+      $stmt1  = $db->prepare("SELECT id_lang FROM application_language where login = ? AND pass = ?");
       $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
       
       $languages = array();
