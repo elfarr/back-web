@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
   session_start();
   if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
-    print('!!');
+    print('**');
     try {
       include '../4/p.php';
       $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -123,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
       
       $stmt1  = $db->prepare("SELECT id_lang FROM application_languages where login = ? AND pass = ?");
-      $stmt1->bindParam($_SESSION['login'], $_SESSION['pass']);
-      $stmt1->execute();
+      $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
+      
       $languages = array();
       while ($stmt1->fetch()) {
         $languages[] = $id_lang;
@@ -201,8 +201,7 @@ else {
   } else {
     foreach ($_POST['languages'] as $language) {
       $stmt = $db->prepare("SELECT id FROM languages WHERE id= :id");
-      $stmt->bindParam(':id', $language);
-      $stmt->execute();
+      $stmt->execute($language);
       if ($stmt->rowCount() == 0) {
         setcookie('languages_unknown', '1', time() + 24 * 60 * 60);
         $errors = TRUE;
