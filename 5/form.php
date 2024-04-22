@@ -28,7 +28,7 @@
 ?>
 <div class="container">
         <?php
-            session_start();
+            //session_start();
             if(isset($_SESSION['login'])) {
                 echo '<a href="logout.php" class="btn btn-danger type="reset"">Выйти</a>';
             } else {

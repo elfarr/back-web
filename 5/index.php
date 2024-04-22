@@ -123,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
       
       $languages = array();
-      while ($stmt1->fetch()) {
-        $languages[] = $id_lang;
+      while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+        array_push($language, strip_tags($row['id_lang']));
       }
     } catch (PDOException $e) {
       echo 'Ошибка: ' . $e->getMessage();
