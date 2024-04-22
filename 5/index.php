@@ -107,9 +107,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $log = $_SESSION['login'];
       $passForm = $_SESSION['pass'];
 
-      $stmt = $db->prepare("SELECT names,tel,email,dateB,gender,biography FROM application WHERE login = ? AND pass = ?");
-      $stmt->bindParam($_SESSION['login'], $_SESSION['pass']);
-      $stmt->execute([$_SESSION['uid']]);
+      $stmt = $db->prepare("SELECT names, tel, email, dateB, gender, biography FROM application WHERE login = ? AND pass = ?");
+      $stmt->bindValue(1, $_SESSION['login']);
+      $stmt->bindValue(2, $_SESSION['pass']);
+      $stmt->execute();
+      
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
       foreach ($stmt as $row) {
         $values['fio'] = $row['names'];
