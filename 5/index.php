@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
 
 
-  //session_start();
+  session_start();
   if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
     try {
       print('!');
