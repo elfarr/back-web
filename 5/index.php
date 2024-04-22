@@ -96,7 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   $languages = isset($_COOKIE['languages']) ? unserialize($_COOKIE['languages']) : [];
 
   print('!');
-  if (!empty($_SESSION['login'])) {
+
+  session_start();
+  if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
     print('!!');
     try {
       include '../4/p.php';
