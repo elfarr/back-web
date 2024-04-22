@@ -247,9 +247,9 @@ else {
     $passForm = $_SESSION['pass'];
     $user_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("SELECT id FROM application WHERE login = ? AND password = ?");
-      $stmt->bindParam($_SESSION['login'], $_SESSION['pass']);
-      $stmt->execute();
+      $stmt = $db->prepare("SELECT id FROM application WHERE login = ? AND pass = ?");
+      $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
+      
       
       // Получение результата
       $row = $stmt->fetch();
