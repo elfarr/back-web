@@ -260,14 +260,14 @@ else {
       $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  WHERE login = :login AND pass = :pass");
       $stmt->bindParam(':login', $_SESSION['login']);
       $stmt->bindParam(':pass', $_SESSION['pass']);
-      $stmt->execute(array(
-          ':fio' => $_POST['fio'],
-          ':tel' => $_POST['tel'],
-          ':email' => $_POST['email'],
-          ':date' => $_POST['date'],
-          ':gen' => $_POST['gen'],
-          ':bio' => $_POST['bio']
-      ));
+      $stmt->bindParam(':fio', $_POST['fio']);
+      $stmt->bindParam(':tel', $_POST['tel']);
+      $stmt->bindParam(':email', $_POST['email']);
+      $stmt->bindParam(':date', $_POST['date']);
+      $stmt->bindParam(':gen', $_POST['gen']);
+      $stmt->bindParam(':bio', $_POST['bio']);
+      $stmt->execute();
+      
     
     } catch (PDOException $e) {
       echo $e->getMessage();
