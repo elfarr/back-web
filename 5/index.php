@@ -257,8 +257,9 @@ else {
           }
       }
       
-      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  where login = ? AND pass = ?");
-      $stmt->bindParam($_SESSION['login'], $_SESSION['pass']);
+      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  where login = :login AND pass = :pass");
+      $stmt->bindParam(':login', $_SESSION['login']);
+$stmt->bindParam(':pass', $_SESSION['pass']);
       $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
       print('Спасибо, результаты сохранены.<br/>');
     
