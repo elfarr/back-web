@@ -99,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   //session_start();
   if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
     try {
+      print('!');
       include '../4/p.php';
       $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -110,14 +111,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       
       
       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-      foreach ($stmt as $row) {
-        $values['fio'] = $row['names'];
-        $values['email'] = $row['email'];
-        $values['tel'] = $row['dateB'];
+        $values['fio'] =  strip_tags($row['names']);
+        $values['email'] =  strip_tags($row['email']);
+        $values['tel'] =  strip_tags($row['tel']);
         $values['gen'] = $row['gender'];
-        $values['bio'] = $row['limbs'];
-        $values['date'] = $row['biography'];
-      }
+        $values['bio'] = $row['biography'];
+        $values['date'] = $row['dateB'];
 
       
       $stmt1  = $db->prepare("SELECT id_lang FROM application_language where login = ? AND pass = ?");
@@ -131,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       echo 'Ошибка: ' . $e->getMessage();
       exit();
     }
-    printf('Вход с логином %s,', $_SESSION['login']);
+    printf('Вход с логином %s', $_SESSION['login']);
   }
   include('form.php');
 } 
