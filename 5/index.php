@@ -246,18 +246,17 @@ else {
       $stmt = $db->prepare("SELECT id FROM application WHERE login = ? AND pass = ?");
       $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
       
-      
-      // Получение результата
       $row = $stmt->fetch();
       if ($row) {
           $applicationId = $row['id'];
-          // Обновление значений столбца id_lang в таблице application_language
-          $languageId = $_POST['languageId'];
-          $updateStmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
-          $updateStmt->bindParam(':languageId', $languageId);
-          $updateStmt->bindParam(':applicationId', $applicationId);
-          $updateStmt->execute();
+          foreach ($_POST['languageId'] as $languageId) {
+              $updateStmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
+              $updateStmt->bindParam(':languageId', $languageId);
+              $updateStmt->bindParam(':applicationId', $applicationId);
+              $updateStmt->execute();
+          }
       }
+      
       $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  where login = ? AND pass = ?");
       $stmt->bindParam($_SESSION['login'], $_SESSION['pass']);
       $stmt->execute(array('fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio']));
