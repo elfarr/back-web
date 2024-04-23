@@ -119,13 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['date'] = $row['dateB'];
 
       
-      $stmt1  = $db->prepare("SELECT id_lang FROM application_language where login = ? AND pass = ?");
-      $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
-      
-      //$languages = array();
-      while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
-        array_push($language, strip_tags($row['id_lang']));
-      }
+        $stmt1 = $db->prepare("SELECT id_lang FROM application_language WHERE login = ? AND pass = ?");
+        $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
+        
+        $languages = array();
+        while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+            array_push($languages, strip_tags($row['id_lang']));
+        }
+        
     } catch (PDOException $e) {
       echo 'Ошибка: ' . $e->getMessage();
       exit();
