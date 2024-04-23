@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   session_start();
   if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
     try {
-      print('!');
+      print('!!');
       include '../4/p.php';
       $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -109,23 +109,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $stmt = $db->prepare("SELECT names, tel, email, dateB, gender, biography FROM application WHERE login = ? AND pass = ?");
       $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
       
-      
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+       $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $values['fio'] =  strip_tags($row['names']);
         $values['email'] =  strip_tags($row['email']);
         $values['tel'] =  strip_tags($row['tel']);
         $values['gen'] = $row['gender'];
         $values['bio'] = $row['biography'];
         $values['date'] = $row['dateB'];
-
-      
         $stmt1 = $db->prepare("SELECT id_lang FROM application_language WHERE login = ? AND pass = ?");
         $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
         
-        $languages = array();
+        //$languages = array();
         while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
-            array_push($languages, strip_tags($row['id_lang']));
+          print( $row['id_lang']);
+            $languages[] = $row['id_lang'];
         }
+        
         
     } catch (PDOException $e) {
       echo 'Ошибка: ' . $e->getMessage();
@@ -206,10 +205,13 @@ else {
       }
     }
   } {
-    $languages = $_POST['languages'];
-    $languagesString = serialize($languages);
-    // Устанавливаем cookie
-    setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
+
+    if (!empty($_POST['languages'])) {
+      $languages = $_POST['languages'];
+      $languagesString = serialize($languages);
+      // Устанавливаем cookie
+      setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
+  }
 
   }
 
@@ -249,14 +251,20 @@ else {
   
       $row = $stmt->fetch();
       if ($row) {
-          $applicationId = $row['id'];
-          foreach ($languages as $languageId) {
-              $updateStmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
-              $updateStmt->bindParam(':languageId', $languageId);
-              $updateStmt->bindParam(':applicationId', $applicationId);
-              $updateStmt->execute();
-          }
-      }
+        $applicationId = $row['id'];
+        // Удалить текущие языки программирования для данной заявки
+        $deleteStmt = $db->prepare("DELETE FROM application_language WHERE id_app = :applicationId");
+        $deleteStmt->bindParam(':applicationId', $applicationId);
+        $deleteStmt->execute();
+        // Затем вставить новые языки программирования
+        foreach ($languages as $languageId) {
+            $insertStmt = $db->prepare("INSERT INTO application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
+            $insertStmt->bindParam(':applicationId', $applicationId);
+            $insertStmt->bindParam(':languageId', $languageId);
+            $insertStmt->execute();
+        }
+    }
+    
       
       $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  WHERE login = :login AND pass = :pass");
       $stmt->bindParam(':login', $_SESSION['login']);
