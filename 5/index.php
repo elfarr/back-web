@@ -106,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $log = $_SESSION['login'];
       $passForm = $_SESSION['pass'];
 
-      $stmt = $db->prepare("SELECT names, tel, email, dateB, gender, biography FROM application WHERE login = ? AND pass = ?");
-      $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
+      $stmt = $db->prepare("SELECT names, tel, email, dateB, gender, biography FROM application WHERE id = ?");
+      $stmt->execute([$_SESSION['uid']]);
       
        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $values['fio'] =  strip_tags($row['names']);
@@ -116,12 +116,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['gen'] = $row['gender'];
         $values['bio'] = $row['biography'];
         $values['date'] = $row['dateB'];
-        $stmt1 = $db->prepare("SELECT id_lang FROM application_language WHERE login = ? AND pass = ?");
-        $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
+        $stmt1 = $db->prepare("SELECT id_lang FROM application_language WHERE id_app = ?");
+        $stmt1->execute([$_SESSION['uid']]);
+  
         
-        //$languages = array();
+        $languages = array();
         while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
-          print( $row['id_lang']);
             $languages[] = $row['id_lang'];
         }
         
@@ -246,8 +246,8 @@ else {
     $passForm = $_SESSION['pass'];
     $user_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("SELECT id FROM application WHERE login = ? AND pass = ?");
-      $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
+      $stmt = $db->prepare("SELECT id FROM application WHERE id = ?");
+      $stmt->execute([$_SESSION['uid']]);
   
       $row = $stmt->fetch();
       if ($row) {
@@ -266,9 +266,9 @@ else {
     }
     
       
-      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  WHERE login = :login AND pass = :pass");
-      $stmt->bindParam(':login', $_SESSION['login']);
-      $stmt->bindParam(':pass', $_SESSION['pass']);
+      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  WHERE id = :id");
+
+      $stmt->bindParam(':id', $_SESSION['id']);
       $stmt->bindParam(':fio', $_POST['fio']);
       $stmt->bindParam(':tel', $_POST['tel']);
       $stmt->bindParam(':email', $_POST['email']);
@@ -284,18 +284,24 @@ else {
     }
   } else {
     $login = uniqid();
-    $paddHash = rand(1, 3); // google
-    $passX = substr(md5($paddHash), 0, 8);
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $pass = '';
+    $length = 10;
+    for ($i = 0; $i < $length; $i++) {
+        $pass .= $characters[rand(0, $charactersLength - 1)];
+    }
+    $passX = md5($pass);
     setcookie('login', $login);
-    setcookie('pass', $passX);
+    setcookie('pass', $pass);
     include '../4/p.php';
     $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     try {
-      $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography,hash,login,pass)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio,:hash,:login,:pass)");
+      $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography,login,pass)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio,:login,:pass)");
       $stmt->execute(array(
-        'fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio'], 'hash' => $paddHash,
+        'fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio'],
         'login' => $login, 'pass' => $passX
       ));
       $applicationId = $db->lastInsertId();

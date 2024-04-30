@@ -58,15 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $data->execute([$logLogin]);
     $pas = $data->fetch(PDO::FETCH_ASSOC);
-    print_r($pas, true);
+    //print_r($pas, true);
     if (!$pas) {
-        exit("Логин или email не существует");
+        exit("Логин не существует");
     }
-    
-    if (!$session_started) {
-        session_start();
+    if ($pas["pass"] != md5($passLogin)) {
+        exit("Неверный пароль");
     }
-
     $_SESSION['login'] =  $logLogin;
     $_SESSION['pass'] =  $passLogin;
     // Здесь необходимо получить id пользователя из базы данных и установить его в сессию
