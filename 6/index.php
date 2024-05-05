@@ -1,9 +1,4 @@
 <?php
-function connect_to_db() {
-  include '../4/p.php';
-  $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -104,25 +99,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   session_start();
   if (!empty($_COOKIE[session_name()]) && !empty($_SESSION['login'])) {
     try {
-      connect_to_db();
-      $stmt = $db->prepare("SELECT names, tel, email, dateB, gender, biography FROM application WHERE login = ? AND pass = ?");
-      $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
+      include '../4/p.php';
+      $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $log = $_SESSION['login'];
+      $passForm = $_SESSION['pass'];
+
+      $stmt = $db->prepare("SELECT names, tel, email, dateB, gender, biography FROM application WHERE id = ?");
+      $stmt->execute([$_SESSION['uid']]);
+      
+       $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $values['fio'] =  strip_tags($row['names']);
         $values['email'] =  strip_tags($row['email']);
         $values['tel'] =  strip_tags($row['tel']);
         $values['gen'] = $row['gender'];
         $values['bio'] = $row['biography'];
         $values['date'] = $row['dateB'];
-
-      
-      $stmt1  = $db->prepare("SELECT id_lang FROM application_language where login = ? AND pass = ?");
-      $stmt1->execute([$_SESSION['login'], $_SESSION['pass']]);
-      
-      //$languages = array();
-      while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
-        array_push($language, strip_tags($row['id_lang']));
-      }
+        $stmt1 = $db->prepare("SELECT id_lang FROM application_language WHERE id_app = ?");
+        $stmt1->execute([$_SESSION['uid']]);
+  
+        
+        $languages = array();
+        while ($row = $stmt1->fetch(PDO::FETCH_ASSOC)) {
+            $languages[] = $row['id_lang'];
+        }
+        
+        
     } catch (PDOException $e) {
       echo 'Ошибка: ' . $e->getMessage();
       exit();
@@ -184,7 +186,11 @@ else {
     $errors = TRUE;
   }
   setcookie('date_value', $_POST['date'], time() + 30 * 24 * 60 * 60);
-  connect_to_db();
+  include '../4/p.php';
+
+  $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
   if (empty($_POST['languages'])) {
     setcookie('languages_error', '1', time() + 24 * 60 * 60);
     $errors = TRUE;
@@ -198,10 +204,13 @@ else {
       }
     }
   } {
-    $languages = $_POST['languages'];
-    $languagesString = serialize($languages);
-    // Устанавливаем cookie
-    setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
+
+    if (!empty($_POST['languages'])) {
+      $languages = $_POST['languages'];
+      $languagesString = serialize($languages);
+      // Устанавливаем cookie
+      setcookie('languages', $languagesString, time() + 3600, '/'); // cookie будет храниться 1 час
+  }
 
   }
 
@@ -228,28 +237,37 @@ else {
     !empty($_COOKIE[session_name()]) &&
     session_start() && !empty($_SESSION['login'])
   ) {
-    connect_to_db();
+    include '../4/p.php';
+
+    $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $logForm = $_SESSION['login'];
     $passForm = $_SESSION['pass'];
     $user_id = $db->lastInsertId();
     try {
-      $stmt = $db->prepare("SELECT id FROM application WHERE login = ? AND pass = ?");
-      $stmt->execute([$_SESSION['login'], $_SESSION['pass']]);
+      $stmt = $db->prepare("SELECT id FROM application WHERE id = ?");
+      $stmt->execute([$_SESSION['uid']]);
   
       $row = $stmt->fetch();
       if ($row) {
-          $applicationId = $row['id'];
-          foreach ($languages as $languageId) {
-              $updateStmt = $db->prepare("UPDATE application_language SET id_lang = :languageId WHERE id = :applicationId");
-              $updateStmt->bindParam(':languageId', $languageId);
-              $updateStmt->bindParam(':applicationId', $applicationId);
-              $updateStmt->execute();
-          }
-      }
+        $applicationId = $row['id'];
+        // Удалить текущие языки программирования для данной заявки
+        $deleteStmt = $db->prepare("DELETE FROM application_language WHERE id_app = :applicationId");
+        $deleteStmt->bindParam(':applicationId', $applicationId);
+        $deleteStmt->execute();
+        // Затем вставить новые языки программирования
+        foreach ($languages as $languageId) {
+            $insertStmt = $db->prepare("INSERT INTO application_language (id_app, id_lang) VALUES (:applicationId, :languageId)");
+            $insertStmt->bindParam(':applicationId', $applicationId);
+            $insertStmt->bindParam(':languageId', $languageId);
+            $insertStmt->execute();
+        }
+    }
+    
       
-      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  WHERE login = :login AND pass = :pass");
-      $stmt->bindParam(':login', $_SESSION['login']);
-      $stmt->bindParam(':pass', $_SESSION['pass']);
+      $stmt = $db->prepare("UPDATE application SET names = :fio, tel = :tel, email = :email, dateB = :date, gender = :gen, biography = :bio  WHERE id = :id");
+
+      $stmt->bindParam(':id', $_SESSION['id']);
       $stmt->bindParam(':fio', $_POST['fio']);
       $stmt->bindParam(':tel', $_POST['tel']);
       $stmt->bindParam(':email', $_POST['email']);
@@ -265,16 +283,24 @@ else {
     }
   } else {
     $login = uniqid();
-    $paddHash = rand(1, 3); // google
-    $passX = substr(md5($paddHash), 0, 8);
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $pass = '';
+    $length = 10;
+    for ($i = 0; $i < $length; $i++) {
+        $pass .= $characters[rand(0, $charactersLength - 1)];
+    }
+    $passX = md5($pass);
     setcookie('login', $login);
-    setcookie('pass', $passX);
-   connect_to_db();
+    setcookie('pass', $pass);
+    include '../4/p.php';
+    $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     try {
-      $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography,hash,login,pass)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio,:hash,:login,:pass)");
+      $stmt = $db->prepare("INSERT INTO application (names,tel,email,dateB,gender,biography,login,pass)" . "VALUES (:fio,:tel,:email,:date,:gen,:bio,:login,:pass)");
       $stmt->execute(array(
-        'fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio'], 'hash' => $paddHash,
+        'fio' => $_POST['fio'], 'tel' => $_POST['tel'], 'email' => $_POST['email'], 'date' => $_POST['date'], 'gen' => $_POST['gen'], 'bio' => $_POST['bio'],
         'login' => $login, 'pass' => $passX
       ));
       $applicationId = $db->lastInsertId();

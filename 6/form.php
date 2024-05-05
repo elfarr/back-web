@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 
 <html lang="ru">
@@ -6,7 +8,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <title>Задание 5</title>
+  <title>Задание 6</title>
 </head>
 
 <body>
@@ -14,7 +16,7 @@
 
   <header>
     <img id="logo" src="logo.jpg" alt="Наш лого" />
-    <h1>Задание 5</h1>
+    <h1>Задание 6</h1>
   </header>
   <?php
   if (!empty($messages)) {
@@ -30,11 +32,14 @@
         <?php
             //session_start();
             if(isset($_SESSION['login'])) {
-                echo '<a href="logout.php" class="btn btn-danger type="reset"">Выйти</a>';
+                echo '<a href="logout.php" class="btn btn-danger" type="reset"">Выйти</a>';
+         
             } else {
-                echo '<a href="login.php" class="btn btn-outline-info">Войти</a>';
+                echo '<a href="login.php" class="btn btn-info">Войти</a>
+                <a href="admin.php" class="btn btn-outline-info">Я администратор</a>';
             }
         ?>
+        
     </div>
   <div class="form">
     <h2>Форма регистрации</h2>

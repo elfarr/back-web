@@ -38,6 +38,8 @@ div {
    width: 40%;
    background-color: #FFF5EE;
 }
-
+table {
+  padding: 10px;
+}
 body {  background-color: #fceae8 !important ;  }
 
