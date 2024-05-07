@@ -1,19 +1,6 @@
 <?php
-function connectToDatabase() {
-    include '../4/p.php';
-    $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $db;
-}
+include ('functions.php');
 
-function startSession($login, $pass, $uid) {
-    if (!isset($_SESSION)) {
-        session_start();
-    }
-    $_SESSION['login'] = $login;
-    $_SESSION['pass'] = $pass;
-    $_SESSION['uid'] = $uid;
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Отображение формы входа
@@ -43,21 +30,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     </html>
     <?php
 } else {
-    // Обработка входа
-    $db = connectToDatabase();
-    $logLogin = $_POST['login'];
-    $passLogin = $_POST['pass'];
+    // Проверка наличия данных в полях логина и пароля
+if (empty($_POST['login']) || empty($_POST['pass'])) {
+    exit("Введите логин и пароль");
+}
 
-    $stmt = $db->prepare("SELECT id, pass FROM application WHERE login = ?");
-    $stmt->execute([$logLogin]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+// Обработка входа
+$db = connectToDatabase();
+$logLogin = $_POST['login'];
+$passLogin = $_POST['pass'];
 
-    if (!$user) {
-        exit("Логин или email не существует");
-    }
+$stmt = $db->prepare("SELECT id, pass FROM application WHERE login = ?");
+$stmt->execute([$logLogin]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    startSession($logLogin, $passLogin, $user['id']);
-    header('Location: ./');
-    exit();
+if (!$user) {
+    exit("Логин или email не существует");
+}
+
+startSession($logLogin, $passLogin, $user['id']);
+header('Location: ./');
+exit();
 }
 ?>

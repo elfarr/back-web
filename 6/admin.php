@@ -4,7 +4,9 @@
 
 <body>
     <?php
-// Проверяем наличие переданных учетных данных
+    include ('functions.php');
+
+
 if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) {
     header('HTTP/1.1 401 Unauthorized');
     header('WWW-Authenticate: Basic realm="My site"');
@@ -12,39 +14,21 @@ if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) {
     exit();
 }
 
-// Подключаем файл с данными для подключения к БД
-include '../4/p.php';
-
-// Подключаемся к БД
-try {
-    $db = new PDO('mysql:host=127.0.0.1;dbname=u67314', $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // В случае ошибки подключения к БД выводим сообщение об ошибке
-    echo 'Ошибка подключения к базе данных: ' . $e->getMessage();
-    exit();
-}
-
-// Получаем переданные учетные данные
+$db = connectToDatabase();
 $username = $_SERVER['PHP_AUTH_USER'];
 $password = $_SERVER['PHP_AUTH_PW'];
 
-// Запрос к таблице admin для получения хеша пароля
 $stmt = $db->prepare("SELECT * FROM admin WHERE admin_login = ?");
 $stmt->execute([$username]);
 $admin = $stmt->fetch();
 
-// Проверяем наличие пользователя с данным логином
-// и совпадение хеша пароля с хешем из базы данных
+
 if (!$admin || !password_verify($password, $admin['admin_pass'])) {
-    // Если администратор не найден или пароль не совпадает, отправляем заголовок 401 Unauthorized
     header('HTTP/1.1 401 Unauthorized');
     header('WWW-Authenticate: Basic realm="My site"');
     print('<h1>401 Требуется авторизация</h1>');
     exit();
 }
-
-// Если администратор найден и пароль совпадает, продолжаем выполнение скрипта...
 ?>
 
 
@@ -79,14 +63,14 @@ if (!$admin || !password_verify($password, $admin['admin_pass'])) {
     <th>Удалить</th>
         </tr>
         <?php
-        // Запрос для объединения таблиц "application" и "application_language" и группировки данных
+  
         $sql = "SELECT a.id, a.names, a.tel, a.email, a.dateB, a.gender, a.biography, GROUP_CONCAT(l.title) AS languages
                 FROM application a
                 LEFT JOIN application_language al ON a.id = al.id_app
                 LEFT JOIN languages l ON al.id_lang = l.id GROUP BY a.id";
         $stmt = $db->query($sql);
     
-        // Вывод данных  из объединенной таблицы
+     
         if ($stmt->rowCount() > 0) {
             while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
@@ -112,11 +96,10 @@ if (!$admin || !password_verify($password, $admin['admin_pass'])) {
             LEFT JOIN application_language al ON l.id = al.id_lang
             GROUP BY l.title";
 
-    // Подготовка и выполнение запроса
     $stmt = $db->prepare($sql);
     $stmt->execute();
 
-    // Вывод статистики
+
     echo "<h2>Статистика :</h2>";
     echo "<table border='1'>";
     echo "<tr><th>Язык программирования</th><th>Количество пользователей</th></tr>";
