@@ -1,7 +1,12 @@
 <?php
  include ('functions.php');
 $db = connectToDatabase();
-
+if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW'])) {
+    header('HTTP/1.1 401 Unauthorized');
+    header('WWW-Authenticate: Basic realm="My site"');
+    print('<h1>401 Требуется авторизация</h1>');
+    exit();
+  }
 
 if(isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = intval($_GET['id']);
