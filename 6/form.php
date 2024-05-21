@@ -27,7 +27,7 @@
     }
     print('</div>');
   }
-include('header.php');
+
 ?>
   <div class="form">
     <h2>Форма регистрации</h2>

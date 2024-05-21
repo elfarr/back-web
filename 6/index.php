@@ -118,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     printf('Вход с логином %s', $_SESSION['login']);
   }
+  include('header.php');
   include('form.php');
 } 
 else {
