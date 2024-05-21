@@ -16,7 +16,7 @@
 
   <header>
     <img id="logo" src="logo.jpg" alt="Наш лого" />
-    <h1>Задание 7</h1>
+    <h1>Задание 6</h1>
   </header>
   <?php
   if (!empty($messages)) {
@@ -27,7 +27,8 @@
     }
     print('</div>');
   }
-include('header.php');
+if  ($action == 'index.php') include('header.php') 
+
 ?>
   <div class="form">
     <h2>Форма регистрации</h2>
@@ -35,8 +36,6 @@ include('header.php');
     <form action="<?php echo $action; ?>" method="post">
     <?php if (isset($_GET['id'])): ?>
     <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
-    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
-
 <?php endif; ?>
       <label>
         ФИО:<br> <input name="fio" <?php if ($errors['fio'] || $errors['symbolfio_error']) {
@@ -99,8 +98,10 @@ include('header.php');
                                   print 'class="error"';
                                 } ?>><?php print $values['bio']; ?></textarea></label><br />
 
-        <label><input type="checkbox" name="check" required /> С контрактом
-          ознакомлен</label><br />
+<?php if ($action === 'index.php'): ?>
+    <label><input type="checkbox" name="check" required /> С контрактом ознакомлен</label><br /> 
+<?php endif; ?>
+
 
         <input type="submit" value="Сохранить" />
     </form>

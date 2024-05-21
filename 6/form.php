@@ -27,6 +27,7 @@
     }
     print('</div>');
   }
+if  ($action == 'index.php') include('header.php') 
 
 ?>
   <div class="form">
@@ -97,8 +98,10 @@
                                   print 'class="error"';
                                 } ?>><?php print $values['bio']; ?></textarea></label><br />
 
-        <label><input type="checkbox" name="check" required /> С контрактом
-          ознакомлен</label><br />
+<?php if ($action === 'index.php'): ?>
+    <label><input type="checkbox" name="check" required /> С контрактом ознакомлен</label><br /> 
+<?php endif; ?>
+
 
         <input type="submit" value="Сохранить" />
     </form>

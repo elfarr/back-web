@@ -10,6 +10,9 @@ $action = "index.php";
 include ('functions.php');
          
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
   $messages = array();
   if (!empty($_COOKIE['save'])) {
@@ -133,7 +136,6 @@ if (!isset($_SESSION['csrf_token'])) {
 } 
 else {
 
-  $errors = valid();
   if (!empty($_POST['csrf_token']) && $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
     exit("CSRF атака обнаружена");
 }
